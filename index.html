@@ -1,14 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Khalil Peguero — Software Engineer</title>
+  <meta name="description" content="Khalil Peguero — Computer Science student at Florida International University, SWE intern candidate, class of 2027.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Apply saved theme before first paint to avoid a flash. Default: dark.
+    (function () {
+      var theme = 'dark';
+      try { theme = localStorage.getItem('kp-theme') || theme; } catch (e) {}
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
 </head>
 <body>
-    <header>
-        <h1>Khalil Peguero</h1>
-    </header>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" aria-label="Main">
+  <a href="#top" class="nav-logo">kp<span>/</span></a>
+  <div class="nav-links">
+    <a href="#about" class="nav-link" data-navlink="about">About</a>
+    <a href="#experience" class="nav-link" data-navlink="experience">Experience</a>
+    <a href="#projects" class="nav-link" data-navlink="projects">Projects</a>
+    <a href="#skills" class="nav-link" data-navlink="skills">Skills</a>
+    <a href="#contact" class="nav-link" data-navlink="contact">Contact</a>
+    <a href="resume/Khalil-Peguero-Resume.pdf" download class="nav-resume" aria-label="Download Khalil Peguero's résumé (PDF)">résumé ↓</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to light mode">☀</button>
+  </div>
+</nav>
+
+<main id="top" class="main">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <p class="hero-name">Khalil Peguero</p>
+    <h1 class="hero-title">I build software people actually use.</h1>
+    <p class="hero-typed" aria-label="CS at Florida International University, SWE intern candidate, class of 2027">
+      <span class="prompt">&gt;</span> <span id="typed"></span><span class="cursor" aria-hidden="true"></span>
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="resume/Khalil-Peguero-Resume.pdf" download class="btn-outline" aria-label="Download Khalil Peguero's résumé (PDF)">Download Résumé</a>
+      <div class="hero-socials">
+        <a href="https://github.com/Kpeguero16" target="_blank" rel="noopener" aria-label="Khalil Peguero on GitHub" class="social-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/khalilpeguero" target="_blank" rel="noopener" aria-label="Khalil Peguero on LinkedIn" class="social-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="section" data-reveal>
+    <p class="section-tag">// 01 — about</p>
+    <div class="about-grid">
+      <div>
+        <h2 class="about-heading">A builder first.</h2>
+        <p class="about-text">I'm a Computer Science student at Florida International University in Miami, graduating in 2027. I like shipping software that gets used — a Slack automation my chapters rely on every week, a payment portal processing real donations, a hackathon project that placed 3rd of 240+.</p>
+        <p class="about-text muted">I range across full-stack web, automation, and fintech, and as president of FIU's chapter of Sigma Lambda Beta, I'm just as comfortable leading a team as writing the code. Bilingual in English and Spanish.</p>
+      </div>
+      <!-- Optional photo slot — swap the placeholder for a real <img> -->
+      <div class="about-photo" aria-hidden="true">
+        <span>[ photo — optional ]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <section id="experience" class="section">
+    <p class="section-tag">// 02 — experience</p>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="timeline">
+
+      <article class="job" data-reveal>
+        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
+        <div class="job-body">
+          <div class="job-head">
+            <h3 class="job-role">Software Engineer</h3>
+            <span class="job-org">Sigma Lambda Beta Education Foundation, Inc.</span>
+          </div>
+          <p class="job-meta">Remote · May 2025 – Present</p>
+          <ul class="job-bullets">
+            <li>Maintain and improve an ASP.NET/C# charitable-contribution portal with secure Authorize.NET payment processing.</li>
+            <li>Write C# unit tests and CI pipelines that run on every commit via GitHub.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job" data-reveal>
+        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
+        <div class="job-body">
+          <div class="job-head">
+            <h3 class="job-role">Online Support Associate</h3>
+            <span class="job-org">FIU Online</span>
+          </div>
+          <p class="job-meta">Miami, FL · May 2025 – Present</p>
+          <ul class="job-bullets">
+            <li>Led an accessibility (WCAG) initiative restructuring the team's Canvas onboarding course.</li>
+            <li>Resolved 1,171+ cases in a year — ranked #1 on the team.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job" data-reveal>
+        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
+        <div class="job-body">
+          <div class="job-head">
+            <h3 class="job-role">Tech Lead, Sophomore Summit</h3>
+            <span class="job-org">BNY</span>
+          </div>
+          <p class="job-meta">Remote · May 2025 – July 2025</p>
+          <ul class="job-bullets">
+            <li>Led a 5-member team in a mock-IPO coding challenge; designed and presented a Python share-allocation algorithm (bid price, timestamp, demand) to senior engineers.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job" data-reveal>
+        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
+        <div class="job-body">
+          <div class="job-head">
+            <h3 class="job-role">Software Engineer Intern</h3>
+            <span class="job-org">Domus Care Solutions</span>
+          </div>
+          <p class="job-meta">Weston, FL · May 2024 – July 2024</p>
+          <ul class="job-bullets">
+            <li>Built a secure Java (Swing/FlatLaf) application to format sensitive patient data, cutting manual data-sorting time by 8+ hours/week.</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section id="projects" class="section">
+    <p class="section-tag">// 03 — projects</p>
+    <h2 class="section-title">Things I've shipped</h2>
+    <div class="projects-grid">
+
+      <article class="project-card" data-reveal>
+        <div class="project-head">
+          <h3 class="project-name">Hermes</h3>
+          <span class="project-kind">slack app</span>
+        </div>
+        <p class="project-desc">A Slack app that parses weekly chapter minutes into a structured summary and per-person task list, then auto-syncs events to Google Calendar.</p>
+        <p class="project-highlight">★ In active use by 20+ members across 2 chapters</p>
+        <div class="project-stack">
+          <span>Python</span><span>Slack API</span><span>Google Calendar API</span><span>Git</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/Kpeguero16/PLACEHOLDER-hermes" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal>
+        <div class="project-head">
+          <h3 class="project-name">MedVoyage</h3>
+          <span class="project-kind">hackathon</span>
+        </div>
+        <p class="project-desc">A medical-diagnosis web app built front-to-back with a team, featuring parallax-scroll animations.</p>
+        <p class="project-highlight">★ 3rd of 240+ projects — ShellHacks 2023</p>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Git</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/Kpeguero16/PLACEHOLDER-medvoyage" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal>
+        <div class="project-head">
+          <h3 class="project-name">365 Days</h3>
+          <span class="project-kind">web + tooling</span>
+        </div>
+        <p class="project-desc">A responsive digital anniversary album with date-gated entry and a Node.js asset pipeline that renames, compresses, and manages 500+ media files (1.3 GB) via Git LFS.</p>
+        <p class="project-highlight">★ 100% Lighthouse performance &amp; accessibility</p>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Node.js</span><span>Git LFS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/Kpeguero16/PLACEHOLDER-365-days" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
+
+    </div>
+    <p class="projects-note">/* GitHub &amp; demo links are placeholders — drop real URLs in */</p>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section id="skills" class="section">
+    <p class="section-tag">// 04 — skills &amp; tech stack</p>
+    <h2 class="section-title">What I work with</h2>
+    <div class="skills-grid">
+
+      <div class="skill-group" data-reveal>
+        <h3 class="skill-label">languages</h3>
+        <div class="skill-items">
+          <span>Java</span><span>Python</span><span>C#</span><span>JavaScript</span><span>C</span><span>HTML/CSS</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-reveal>
+        <h3 class="skill-label">frameworks &amp; libraries</h3>
+        <div class="skill-items">
+          <span>React</span><span>ASP.NET</span><span>Node.js</span><span>Gatsby JS</span><span>Tailwind CSS</span><span>Bootstrap</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-reveal>
+        <h3 class="skill-label">tools &amp; platforms</h3>
+        <div class="skill-items">
+          <span>Git/GitHub</span><span>Salesforce</span><span>Canvas LMS</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-reveal>
+        <h3 class="skill-label">certifications</h3>
+        <div class="skill-items">
+          <span>Certiport Java IT Specialist</span><span>React Foundations for Next.js</span><span>Learning Git &amp; GitHub</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="contact" data-reveal>
+    <p class="section-tag">// 05 — contact</p>
+    <h2 class="contact-title">Looking for a summer 2026 SWE intern?</h2>
+    <p class="contact-blurb">I'd love to hear about what you're building. My inbox is open — I usually reply within a day.</p>
+    <div class="contact-actions">
+      <a href="mailto:kpegu003@fiu.edu" class="btn-primary">kpegu003@fiu.edu</a>
+      <a href="resume/Khalil-Peguero-Resume.pdf" download class="btn-outline" aria-label="Download Khalil Peguero's résumé (PDF)">Résumé (PDF) ↓</a>
+    </div>
+    <div class="contact-socials">
+      <a href="https://linkedin.com/in/khalilpeguero" target="_blank" rel="noopener" aria-label="Khalil Peguero on LinkedIn">linkedin.com/in/khalilpeguero</a>
+      <a href="https://github.com/Kpeguero16" target="_blank" rel="noopener" aria-label="Khalil Peguero on GitHub">github.com/Kpeguero16</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Khalil Peguero</span>
+    <span>Miami, FL · built by hand</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Theme toggle ----
+  var toggle = document.getElementById('theme-toggle');
+  function renderToggle() {
+    var dark = document.documentElement.dataset.theme !== 'light';
+    toggle.textContent = dark ? '☀' : '☾';
+    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  toggle.addEventListener('click', function () {
+    var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('kp-theme', next); } catch (e) {}
+    renderToggle();
+  });
+  renderToggle();
+
+  // ---- Typed hero line ----
+  var fullTyped = 'CS @ Florida International University · SWE Intern candidate · Class of 2027';
+  var typedEl = document.getElementById('typed');
+  if (reduced) {
+    typedEl.textContent = fullTyped;
+  } else {
+    var i = 0;
+    var typer = setInterval(function () {
+      i++;
+      typedEl.textContent = fullTyped.slice(0, i);
+      if (i >= fullTyped.length) clearInterval(typer);
+    }, 32);
+  }
+
+  // ---- Footer year ----
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---- Scroll reveals ----
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if (!reduced && 'IntersectionObserver' in window) {
+    revealEls.forEach(function (el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(18px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+    });
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'none';
+          revealObs.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { revealObs.observe(el); });
+  }
+
+  // ---- Active-section nav highlight ----
+  var sections = ['about', 'experience', 'projects', 'skills', 'contact']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  function setActive(id) {
+    document.querySelectorAll('[data-navlink]').forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('data-navlink') === id);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var navObs = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; })[0];
+      if (visible) setActive(visible.target.id);
+    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5] });
+    sections.forEach(function (s) { navObs.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
