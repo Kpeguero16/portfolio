@@ -21,3 +21,15 @@ To refresh by hand:
 ```sh
 GITHUB_TOKEN=$(gh auth token) node scripts/fetch-prs.mjs
 ```
+
+## Checking a change
+
+`scripts/measure.mjs` measures what a change must not make worse: when the name is first visible, the readout under the hero, sideways scroll at 320, 390 and 1440 wide, page errors, and how far a visitor scrolls to reach Experience. The comment at the top of the file shows how to start Chrome and a local server for it. Run it on `main` and on your branch and compare.
+
+Lighthouse covers the scores:
+
+```sh
+npx lighthouse http://127.0.0.1:8765/ --port=9333 --only-categories=performance,accessibility,best-practices,seo
+```
+
+Lighthouse audits whichever color scheme the browser reports, so a Mac in dark mode gets a dark-mode audit. Add `--blink-settings=preferredColorScheme=1` to the Chrome command to force light. Lighthouse also sees only what's on screen when its audit runs, and the hero's blocks may or may not have landed by then, so the accessibility score can change between runs. For a full contrast check in either scheme, scroll the page and run axe-core in it.
