@@ -79,7 +79,13 @@ const onFloor = $('#onFloor');
 const prUrl = p => p.url || `https://github.com/kyegomez/swarms/pull/${p.n}`;
 let engine = null, W = 0, H = 0, walls = [], drag = null;
 const blocks = [];
-if (FLOW) $('.readout .count b:last-child').textContent = pool.length; // phones get fewer blocks
+const partial = pool.length < PRS.length; // phones get only the newest blocks
+if (partial) { // say "the newest 14" so it doesn't read as a second total under the hero's count
+  const total = $('.readout .count b:last-child');
+  total.previousSibling.textContent = ' of the newest ';
+  total.textContent = pool.length;
+  total.nextSibling.textContent = ' merged PRs';
+}
 
 function sizeFor(p) {
   const s = FLOW ? .8 : 1;
@@ -273,7 +279,7 @@ function finishTask(T, k) {
   T.crew.forEach(i => { if (TASK[i] !== k) return; TASK[i] = -1; const a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 3; VX[i] = Math.cos(a) * s; VY[i] = Math.sin(a) * s; });
   const p = fetchList[fetchIdx];
   if (p) { fetchIdx++; makeBlock(p, T.x, T.y, -4, true); ring.label = `#${p.n}`; blip(880, .08, 'sine', .14); }
-  else ring.label = `that's all ${pool.length}, for now`;
+  else ring.label = partial ? `that's the newest ${pool.length}` : `that's all ${pool.length}, for now`;
 }
 let skyOn = true, lastS = performance.now();
 function skyFrame(now) {
