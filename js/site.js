@@ -416,7 +416,11 @@ const desk = $('#desk'), wins = $$('.win', desk), dockBtns = $$('.dock button', 
 let zTop = 50; // above the starting stack
 const narrow = () => mqFlow.matches;
 function layoutDesk() {
-  if (narrow()) { desk.style.height = ''; return; }
+  if (narrow()) { // the phone layout has no dock, so nothing may stay closed
+    desk.style.height = '';
+    wins.forEach(w => { w.classList.remove('closed'); w.inert = false; });
+    syncDock(); return;
+  }
   const dw = desk.clientWidth, ww = clamp(dw * .31, 300, 390);
   wins.forEach(w => { w.style.width = `${ww}px`; });
   // three windows across the top, two below them; the second row clears the first row's links
