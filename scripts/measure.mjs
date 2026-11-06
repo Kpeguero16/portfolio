@@ -6,9 +6,8 @@
 //   node scripts/measure.mjs http://127.0.0.1:8765/ [chrome debugging port, default 9333]
 //
 // For each size it prints when the name is first fully visible, the readout under the hero after 6 s,
-// the widest sideways overflow, and any page errors. On desktop it also scrolls with real wheel events
-// (window.scrollTo leaves the pinned hero's screenshots out of date) until the Experience heading is
-// under the nav. Lighthouse and axe-core cover scores and contrast; see the README.
+// the widest sideways overflow, and any page errors. It also scrolls with real wheel events, the way a
+// visitor does, until the Experience heading is under the nav. Lighthouse and axe-core cover scores and contrast; see the README.
 const [url, port = '9333'] = process.argv.slice(2);
 if (!url) { console.error('usage: node scripts/measure.mjs <url> [port]'); process.exit(1); }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
