@@ -9,7 +9,10 @@ const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-const FLOW = innerWidth <= 820; // phones: no pinned zoom, matches the CSS breakpoint
+const mqFlow = matchMedia('(max-width: 820px), (max-height: 560px)'); // same query as the CSS
+let FLOW = mqFlow.matches; // phones and short screens: no pinned zoom
+// don't let a slow font file hold the whole hero back
+const fontsReady = Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]);
 const PRS = window.PRS || [];
 const M = window.Matter;
 
@@ -39,12 +42,12 @@ $$('[data-tick]').forEach(a => a.addEventListener('pointerenter', () => blip(140
 const slug = s => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 36).replace(/-$/, '');
 const cmd = t => `<span class="ps">$</span> <span class="cmd">${t}</span>`;
 function scriptFor(p) {
-  const tag = `<span class="dim">[${p.type}][${esc(p.sym)}]</span>`;
+  const tag = `<span class="dim">[${esc(p.type)}][${esc(p.sym)}]</span>`;
   const edit = `<span class="dim">  edit · +${p.a} −${p.r}</span>`;
   if (p.kind === 'docs') return [
     [cmd(`git switch -c docs/${slug(p.sym || p.desc)}`)], [edit], [`${cmd('gh pr create')} ${tag}`], [`<span class="drop">✓ merged docs #${p.n}</span>`, p]];
   const first = esc((p.sym || 'tests').split(/[ ,.]/)[0]);
-  const q = [[cmd(`git switch -c ${p.type.toLowerCase()}/${slug(p.sym || p.desc)}`)]];
+  const q = [[cmd(`git switch -c ${esc(p.type.toLowerCase())}/${slug(p.sym || p.desc)}`)]];
   if (p.type === 'FIX' || p.type === 'FEAT') q.push([`${cmd(`pytest -q -k ${first}`)}  <span class="bad">1 failed</span>`], [edit], [`${cmd(`pytest -q -k ${first}`)}  <span class="ok">1 passed</span>`]);
   else q.push([`${cmd(`rg -w ${first} swarms tests`)}  <span class="dim">no other callers</span>`], [edit], [`${cmd('pytest -q')}  <span class="ok">passed</span>`]);
   q.push([`${cmd('gh pr create')} ${tag}`], [`<span class="drop">✓ merged #${p.n}</span>`, p]);
@@ -88,7 +91,7 @@ function makeBlock(p, x, y, vy = 0, fresh = false) {
   const el = document.createElement('div');
   el.className = `blk t-${p.kind === 'docs' ? 'DOCS' : p.type}${fresh ? ' fresh' : ''}`;
   el.style.width = `${w}px`; el.style.height = `${h}px`;
-  el.innerHTML = `<span class="bn">#${p.n}</span><span class="bt">${p.kind === 'docs' ? 'docs' : p.type.toLowerCase()}</span>`;
+  el.innerHTML = `<span class="bn">#${p.n}</span><span class="bt">${p.kind === 'docs' ? 'docs' : esc(p.type.toLowerCase())}</span>`;
   el.setAttribute('role', 'link'); el.tabIndex = 0;
   el.setAttribute('aria-label', `${p.kind === 'docs' ? 'Docs PR' : 'PR'} ${p.n}: ${p.desc}`);
   world.appendChild(el);
@@ -117,6 +120,10 @@ function buildWalls() {
     M.Bodies.rectangle(W + t / 2, H / 2, t, H * 4, { isStatic: true }),
   ];
   M.Composite.add(engine.world, walls);
+  for (const b of blocks) {
+    const { x, y } = b.body.position, nx = clamp(x, b.w / 2 + 4, W - b.w / 2 - 4), ny = Math.min(y, H - b.h / 2 - 4);
+    if (nx !== x || ny !== y) { M.Body.setPosition(b.body, { x: nx, y: ny }); M.Body.setVelocity(b.body, { x: 0, y: 0 }); }
+  }
 }
 const local = e => { const r = pin.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
 if (M) {
@@ -337,14 +344,16 @@ function skyFrame(now) {
     if (g.label) { sx.fillStyle = '#17150f'; sx.font = '500 12px "IBM Plex Mono", monospace'; sx.textAlign = 'center'; sx.fillText(g.label, g.x, g.y - 40 - a * 26); }
     sx.globalAlpha = 1;
   }
-  requestAnimationFrame(skyFrame);
+  if (!reduce) requestAnimationFrame(skyFrame);
 }
 pin.addEventListener('pointermove', e => { const q = local(e); pointer.x = q.x; pointer.y = q.y; pointer.on = true; }, { passive: true });
 pin.addEventListener('pointerleave', () => { pointer.on = false; });
 pin.addEventListener('pointerdown', e => {
   if (e.target.closest('a,button,.blk')) return;
   if (phase !== 'free') { release(); return; }
-  const q = local(e); spawnTask(q.x, q.y);
+  const q = local(e), k = tasks.length;
+  spawnTask(q.x, q.y);
+  if (reduce && tasks[k]) { finishTask(tasks[k], k); requestAnimationFrame(skyFrame); } // no swarm animation: fetch at once
 });
 addEventListener('keydown', () => release(), { once: true });
 if (!fine) $('#howTo').innerHTML = '<kbd>drag</kbd> to throw · <kbd>tap</kbd> to open · tap empty space for another';
@@ -353,7 +362,7 @@ if (!fine) $('#howTo').innerHTML = '<kbd>drag</kbd> to throw · <kbd>tap</kbd> t
 const rise = $('#rise'), nav = $('#nav'), exp = $('#experience');
 let geo = null;
 function measureRise() {
-  if (FLOW) return;
+  if (FLOW) { geo = null; rise.style.transform = ''; return; }
   const prev = rise.style.transform; rise.style.transform = 'none';
   const pr = pin.getBoundingClientRect(), r = rise.getBoundingClientRect();
   rise.style.transform = prev;
@@ -363,16 +372,18 @@ function measureRise() {
 function render() {
   const vh = innerHeight, y = scrollY;
   if (FLOW) {
+    pin.style.setProperty('--p', '0'); world.classList.remove('off');
     const on = y < vh; physicsOn = on;
     const was = skyOn; skyOn = on; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   } else {
     const p = clamp(y / (vh * 1.1));
     const z = reduce ? (y > vh * .5 ? 1 : 0) : ease(clamp(y / vh));
     if (geo) {
-      const vw = pin.clientWidth, S = Math.max(vw / geo.w, pin.clientHeight / geo.h) * 1.04;
-      rise.style.transform = `translate(${(vw / 2 - geo.cx) * z}px, ${(pin.clientHeight / 2 - geo.cy) * z}px) scale(${1 + (S - 1) * z})`;
+      const vw = pin.clientWidth, ph = pin.clientHeight, S = (vw / geo.w) * 1.02, cy = Math.max(ph / 2, geo.h * S / 2);
+      rise.style.transform = `translate(${(vw / 2 - geo.cx) * z}px, ${(cy - geo.cy) * z}px) scale(${1 + (S - 1) * z})`;
     }
     pin.style.setProperty('--p', p.toFixed(4));
+    const gone = p > .18; if (gone !== world.classList.contains('off')) { world.classList.toggle('off', gone); if (gone) hideTip(); }
     physicsOn = y < vh * .35;
     const was = skyOn; skyOn = y < vh * .35; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   }
@@ -380,9 +391,9 @@ function render() {
   nav.classList.toggle('solid', exp.getBoundingClientRect().top < 70);
   requestAnimationFrame(render);
 }
-function onResize() { sizeSky(); measureRise(); buildWalls(); }
+function onResize() { FLOW = mqFlow.matches; sizeSky(); measureRise(); buildWalls(); layoutDesk(); }
 let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(onResize, 150); });
-(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+fontsReady.then(() => {
   sizeSky(); seedSwarm(); measureRise(); buildWalls();
   if (!reduce) nameTargets(); else release();
   t0 = performance.now(); lastS = t0;
@@ -403,7 +414,7 @@ $$('.pop').forEach((el, i) => { el.style.transitionDelay = `${(i % 3) * 70}ms`; 
 /* ── projects: windows on a desktop ────────────────── */
 const desk = $('#desk'), wins = $$('.win', desk), dockBtns = $$('.dock button', desk);
 let zTop = 50; // above the starting stack
-const narrow = () => desk.clientWidth < 760;
+const narrow = () => mqFlow.matches;
 function layoutDesk() {
   if (narrow()) { desk.style.height = ''; return; }
   const dw = desk.clientWidth, ww = clamp(dw * .31, 300, 390);
@@ -423,7 +434,7 @@ function layoutDesk() {
 const syncDock = () => dockBtns.forEach((b, i) => b.classList.toggle('open', !wins[i].classList.contains('closed')));
 const focusWin = w => { w.style.zIndex = ++zTop; };
 layoutDesk(); addEventListener('resize', layoutDesk);
-(document.fonts ? document.fonts.ready : Promise.resolve()).then(layoutDesk);
+fontsReady.then(layoutDesk);
 wins.forEach(w => {
   w.addEventListener('pointerdown', () => focusWin(w));
   const bar = $('.win-bar', w);
@@ -438,10 +449,10 @@ wins.forEach(w => {
     const up = () => { bar.removeEventListener('pointermove', mv); bar.removeEventListener('pointerup', up); w.classList.remove('dragging'); blip(330, .05, 'triangle', .07); };
     bar.addEventListener('pointermove', mv); bar.addEventListener('pointerup', up);
   });
-  $('.win-close', w).addEventListener('click', e => { e.stopPropagation(); w.classList.add('closed'); syncDock(); blip(300, .05, 'sine', .08); });
+  $('.win-close', w).addEventListener('click', e => { e.stopPropagation(); w.classList.add('closed'); w.inert = true; syncDock(); blip(300, .05, 'sine', .08); });
 });
 dockBtns.forEach((b, i) => b.addEventListener('click', () => {
-  const w = wins[i]; w.classList.remove('closed'); focusWin(w);
+  const w = wins[i]; w.classList.remove('closed'); w.inert = false; focusWin(w);
   w.classList.remove('bump'); void w.offsetWidth; w.classList.add('bump'); syncDock(); blip(700, .06, 'sine', .08);
 }));
 
@@ -477,15 +488,15 @@ function demo(cv) {
   const kind = cv.dataset.demo, c = cv.getContext('2d');
   let w = 0, h = 0, on = false, t = 0;
   const size = () => { const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); w = r.width; h = r.height; cv.width = w * d; cv.height = h * d; c.setTransform(d, 0, 0, d, 0, 0); };
-  size(); new ResizeObserver(size).observe(cv);
+  size(); new ResizeObserver(() => { size(); if (reduce && on) draw(); }).observe(cv);
   const label = s => { c.fillStyle = C.ink2; c.font = `500 10.5px ${MONO}`; c.textAlign = 'left'; c.fillText(s, 10, 17); };
   const candles = []; let v = 50;
   const pushCandle = () => { const o = v; v += (Math.random() - .47) * 4; candles.push({ o, c: v, hi: Math.max(o, v) + Math.random() * 2, lo: Math.min(o, v) - Math.random() * 2 }); };
   for (let i = 0; i < 40; i++) pushCandle();
   const minutes = ['Fundraiser → Friday', 'Dues due the 15th', 'Alumni mixer, 7pm', 'Ana books venue'];
-  const outs = [['event', 'Fri fundraiser'], ['task', 'dues by 15th'], ['event', '7pm mixer'], ['task', 'venue · Ana']];
+  const outs = [['event', 'Friday'], ['task', 'dues, 15th'], ['event', 'mixer 7pm'], ['task', 'venue']];
   function draw() {
-    if (!on) return; t++;
+    if (!on) return; t = reduce ? 180 : t + 1;
     c.clearRect(0, 0, w, h); c.textAlign = 'left';
     if (kind === 'flow') {
       label('trade flow · illustrative');
@@ -547,7 +558,7 @@ function demo(cv) {
         c.fillRect(cx, cy, cell, cell);
       }
     }
-    requestAnimationFrame(draw);
+    if (!reduce) requestAnimationFrame(draw);
   }
   new IntersectionObserver(([en]) => { const was = on; on = en.isIntersecting; if (on && !was) requestAnimationFrame(draw); }).observe(cv);
 }
@@ -565,4 +576,5 @@ $('#copyAddr').addEventListener('click', () => {
   const done = msg => { toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1500); };
   (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(() => done('Copied!'), () => done(v));
 });
+window.__siteReady = true; // tells the fallback in index.html the page set itself up
 })();
