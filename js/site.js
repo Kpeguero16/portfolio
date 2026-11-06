@@ -392,7 +392,7 @@ function render() {
     const was = skyOn; skyOn = on; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   } else {
     const p = clamp(y / (vh * 1.1));
-    const z = reduce ? (y > vh * .5 ? 1 : 0) : ease(clamp(y / vh));
+    const z = reduce ? (y > vh * .3 ? 1 : 0) : ease(clamp(y / (vh * .6))); // the terminal fills the screen by .6 screens of scroll
     if (geo) {
       const vw = pin.clientWidth, ph = pin.clientHeight, S = (vw / geo.w) * 1.02, cy = Math.max(ph / 2, geo.h * S / 2);
       rise.style.transform = `translate(${(vw / 2 - geo.cx) * z}px, ${(cy - geo.cy) * z}px) scale(${1 + (S - 1) * z})`;
