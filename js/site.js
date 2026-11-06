@@ -76,6 +76,7 @@ const rainList = pool.slice(0, Math.max(0, pool.length - termCount - fetchCount)
 const termList = pool.slice(rainList.length, rainList.length + termCount);
 const fetchList = pool.slice(rainList.length + termCount);
 const onFloor = $('#onFloor');
+const PACK = .5; // how much of the floor area a settled pile covers
 const prUrl = p => p.url || `https://github.com/kyegomez/swarms/pull/${p.n}`;
 let engine = null, W = 0, H = 0, walls = [], drag = null;
 const blocks = [];
@@ -167,6 +168,13 @@ if (M) {
   addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
 }
 function startRain() {
+  // rain only as many blocks as fit under the hero buttons, so on short screens the pile can't bury them;
+  // the oldest ones that don't fit wait in the fetch list instead
+  const area = p => { const { w, h } = sizeFor(p); return w * h; };
+  let room = Math.max(0, H - ($('.cta').getBoundingClientRect().bottom - pin.getBoundingClientRect().top + 16)) * W * PACK;
+  room -= termList.reduce((s, p) => s + area(p), 0);
+  let fit = 0; while (fit < rainList.length && (room -= area(rainList[rainList.length - 1 - fit])) >= 0) fit++;
+  fetchList.unshift(...rainList.splice(0, rainList.length - fit));
   rainList.forEach((p, i) => setTimeout(() => {
     const { w } = sizeFor(p);
     makeBlock(p, w / 2 + 20 + Math.random() * (W * .97 - w), -60 - Math.random() * 120, 2);
@@ -286,11 +294,12 @@ function skyFrame(now) {
   if (!skyOn) return;
   const dt = Math.min(2, (now - lastS) / 16.67); lastS = now;
   const t = (now - t0) / 1000;
-  if (phase === 'form' && t > 2.4) phase = 'hold';
-  if (phase === 'hold' && t > 3.4) release();
+  if (phase === 'form' && t > 1.6) phase = 'hold';
+  if (phase === 'hold' && t > 2.1) release();
   sx.clearRect(0, 0, SW, SH);
-  const free = phase === 'free', R = Math.min(220, SW * .2), R2 = R * R, kForm = phase === 'form' ? .004 + clamp(t / 2.1) * .05 : .07;
+  const free = phase === 'free', R = Math.min(220, SW * .2), R2 = R * R, kForm = phase === 'form' ? .004 + clamp(t / 1.4) * .05 : .07;
   const fade = free ? clamp((now - relAt) / 1400) : 0;
+  if (free && fade > .85 && !pin.classList.contains('settled')) pin.classList.add('settled'); // the swarm drops behind the text
   const groups = palette.map(() => []), taskers = [], leaving = [];
   for (let i = 0; i < NA; i++) {
     if (free && i >= KEEP && fade >= 1) continue;
@@ -378,8 +387,8 @@ function measureRise() {
 function render() {
   const vh = innerHeight, y = scrollY;
   if (FLOW) {
-    pin.style.setProperty('--p', '0'); world.classList.remove('off');
-    const on = y < vh; physicsOn = on;
+    pin.style.setProperty('--p', '0'); world.classList.remove('off'); pin.classList.remove('gone');
+    const on = y < pin.offsetHeight; physicsOn = on; // the phone hero can be taller than the screen
     const was = skyOn; skyOn = on; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   } else {
     const p = clamp(y / (vh * 1.1));
@@ -389,7 +398,7 @@ function render() {
       rise.style.transform = `translate(${(vw / 2 - geo.cx) * z}px, ${(cy - geo.cy) * z}px) scale(${1 + (S - 1) * z})`;
     }
     pin.style.setProperty('--p', p.toFixed(4));
-    const gone = p > .18; if (gone !== world.classList.contains('off')) { world.classList.toggle('off', gone); if (gone) hideTip(); }
+    const gone = p > .18; if (gone !== world.classList.contains('off')) { world.classList.toggle('off', gone); pin.classList.toggle('gone', gone); if (gone) hideTip(); }
     physicsOn = y < vh * .35;
     const was = skyOn; skyOn = y < vh * .35; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   }
@@ -398,10 +407,11 @@ function render() {
   requestAnimationFrame(render);
 }
 function onResize() { FLOW = mqFlow.matches; sizeSky(); measureRise(); buildWalls(); layoutDesk(); }
-let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(onResize, 150); });
+let rz; const queueResize = () => { clearTimeout(rz); rz = setTimeout(onResize, 150); };
+addEventListener('resize', queueResize); new ResizeObserver(queueResize).observe(pin);
 fontsReady.then(() => {
   sizeSky(); seedSwarm(); measureRise(); buildWalls();
-  if (!reduce) nameTargets(); else release();
+  if (!reduce) nameTargets(); else { pin.classList.add('settled'); release(); }
   t0 = performance.now(); lastS = t0;
   requestAnimationFrame(skyFrame); requestAnimationFrame(render);
 });
