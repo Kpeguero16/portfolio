@@ -14,7 +14,7 @@ It's one static page with no build step. Open `index.html` in a browser to run i
 
 ## Refreshing the PR data
 
-`.github/workflows/refresh-prs.yml` runs on Mondays and Thursdays and can also be started from the Actions tab. It rewrites `data/prs.js`, commits it if anything changed, and requests a Pages build.
+`.github/workflows/refresh-prs.yml` runs on Mondays and Thursdays and can also be started from the Actions tab. It rewrites `data/prs.js`, commits it if anything changed, and starts `.github/workflows/pages.yml`, which deploys the site. That workflow also deploys every push to `main`, so Settings > Pages > Source must be "GitHub Actions".
 
 To refresh by hand:
 

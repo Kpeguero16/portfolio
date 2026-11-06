@@ -1,0 +1,40 @@
+name: Deploy to Pages
+
+# Replaces GitHub's built-in "pages-build-deployment", whose actions still target Node.js 20.
+# Needs Settings > Pages > Source set to "GitHub Actions".
+on:
+  push:
+    branches: [main]
+  pull_request: # builds the site on every PR so a broken workflow shows up before main; only main deploys
+  workflow_dispatch: # refresh-prs.yml starts this after it commits new PR data, since its own push can't
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # the site is the repo as it stands: no build step. Dotfiles, .git and .github stay out.
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # to deploy
+      id-token: write # to prove the deploy comes from this repo's main
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # one deploy at a time, and never cancel one halfway
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
