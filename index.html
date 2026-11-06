@@ -47,6 +47,7 @@ try {
   <div class="right">
     <a href="#experience" data-tick class="hide-sm">Experience</a>
     <a href="#projects" data-tick class="hide-sm">Projects</a>
+    <a href="#skills" data-tick class="hide-sm">Skills</a>
     <a href="#hello" data-tick>Contact</a>
     <a href="Khalil_Peguero_Resume.pdf" data-tick class="hide-sm">Resume</a>
     <button class="sound" id="sound" aria-pressed="false" aria-label="Toggle sound">
@@ -212,6 +213,175 @@ try {
       </div>
     </div>
   </section>
+
+  <section class="sec" id="skills" aria-labelledby="skills-title">
+    <h2 class="sec-h pop" id="skills-title"><b>#</b>Agent skills</h2>
+    <p class="sec-sub pop">The skills I use with Claude Code and Codex. The nine I wrote run my Swarms work, from picking a PR to the standup notes. The rest are credited to their authors.</p>
+    <div class="repo pop">
+      <div class="win-bar"><span class="lights"><i></i><i></i><i></i></span><span>github.com/Kpeguero16/skills</span></div>
+      <div class="repo-install"><code><span aria-hidden="true">$ </span>npx skills add Kpeguero16/skills -g</code><button type="button" class="btn" id="copyInstall">Copy</button><a class="btn" href="https://github.com/Kpeguero16/skills">GitHub ↗</a></div>
+      <div class="repo-grid">
+        <div class="repo-tree">
+          <span class="dir" aria-hidden="true">skills/</span>
+          <div role="tablist" aria-orientation="vertical" aria-label="Files in the repo">
+            <button role="tab" id="skt-swarms-status" aria-controls="sk-swarms-status" aria-selected="false" tabindex="-1" class="mine">swarms-status</button>
+            <button role="tab" id="skt-swarms-picks" aria-controls="sk-swarms-picks" aria-selected="false" tabindex="-1" class="mine">swarms-picks</button>
+            <button role="tab" id="skt-swarms-own" aria-controls="sk-swarms-own" aria-selected="true" tabindex="0" class="mine">swarms-own</button>
+            <button role="tab" id="skt-verify-swarms" aria-controls="sk-verify-swarms" aria-selected="false" tabindex="-1" class="mine">verify-swarms</button>
+            <button role="tab" id="skt-swarms-publish" aria-controls="sk-swarms-publish" aria-selected="false" tabindex="-1" class="mine">swarms-publish</button>
+            <button role="tab" id="skt-swarms-prs" aria-controls="sk-swarms-prs" aria-selected="false" tabindex="-1" class="mine">swarms-prs</button>
+            <button role="tab" id="skt-swarms-standup" aria-controls="sk-swarms-standup" aria-selected="false" tabindex="-1" class="mine">swarms-standup</button>
+            <button role="tab" id="skt-swarms-retro" aria-controls="sk-swarms-retro" aria-selected="false" tabindex="-1" class="mine">swarms-retro</button>
+            <button role="tab" id="skt-swarms-tools" aria-controls="sk-swarms-tools" aria-selected="false" tabindex="-1" class="mine">swarms-tools</button>
+            <button role="tab" id="skt-full-stop" aria-controls="sk-full-stop" aria-selected="false" tabindex="-1" class="up first">full-stop <em>tstack</em></button>
+            <button role="tab" id="skt-full-send" aria-controls="sk-full-send" aria-selected="false" tabindex="-1" class="up">full-send <em>tstack</em></button>
+            <button role="tab" id="skt-sol-loop" aria-controls="sk-sol-loop" aria-selected="false" tabindex="-1" class="up">sol-loop <em>tstack</em></button>
+            <button role="tab" id="skt-file-pr" aria-controls="sk-file-pr" aria-selected="false" tabindex="-1" class="up">file-pr <em>tstack</em></button>
+            <button role="tab" id="skt-babysit-pr" aria-controls="sk-babysit-pr" aria-selected="false" tabindex="-1" class="up">babysit-pr <em>tstack</em></button>
+            <button role="tab" id="skt-modernize" aria-controls="sk-modernize" aria-selected="false" tabindex="-1" class="up">modernize <em>tstack</em></button>
+            <button role="tab" id="skt-leaving-pr-comments" aria-controls="sk-leaving-pr-comments" aria-selected="false" tabindex="-1" class="up">leaving-pr-comments <em>tstack</em></button>
+            <button role="tab" id="skt-unslop" aria-controls="sk-unslop" aria-selected="false" tabindex="-1" class="up">unslop <em>pstack</em></button>
+            <button role="tab" id="skt-agents-md" aria-controls="sk-agents-md" aria-selected="false" tabindex="-1" class="first">AGENTS.md</button>
+            <button role="tab" id="skt-scripts-check_skills-py" aria-controls="sk-scripts-check_skills-py" aria-selected="false" tabindex="-1">scripts/check_skills.py</button>
+          </div>
+        </div>
+        <div class="repo-view">
+          <article role="tabpanel" id="sk-swarms-status" aria-labelledby="skt-swarms-status" hidden>
+            <p class="path">skills/swarms-status/SKILL.md</p>
+            <h3>swarms-status</h3>
+            <p>Gives each of my open PRs a verdict: wait, nudge, rebase, rework or close.</p>
+            <dl><dt>Say</dt><dd><q>morning status</q></dd><dt>Needs</dt><dd>gh</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-status">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-picks" aria-labelledby="skt-swarms-picks" hidden>
+            <p class="path">skills/swarms-picks/SKILL.md</p>
+            <h3>swarms-picks</h3>
+            <p>Finds the day's PR opportunities, ranks them by what has merged before, and writes a brief for each.</p>
+            <dl><dt>Say</dt><dd><q>today's picks</q></dd><dt>Needs</dt><dd>gh, the Wispr Flow connector</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-picks">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-own" aria-labelledby="skt-swarms-own">
+            <p class="path">skills/swarms-own/SKILL.md</p>
+            <h3>swarms-own</h3>
+            <p>Takes one brief from proof to a PR that's ready for the maintainer, stopping once for my approval of the text.</p>
+            <dl><dt>Say</dt><dd><q>own it, full stop</q> <span>also loads full-stop</span></dd><dt>Needs</dt><dd>T3 Code, Codex for the review</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-own">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-verify-swarms" aria-labelledby="skt-verify-swarms" hidden>
+            <p class="path">skills/verify-swarms/SKILL.md</p>
+            <h3>verify-swarms</h3>
+            <p>Runs swarms code offline and proves a change red on the base and green on the branch.</p>
+            <dl><dt>Say</dt><dd><q>verify</q></dd><dt>Needs</dt><dd>local clones, the swarms venv</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/verify-swarms">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-publish" aria-labelledby="skt-swarms-publish" hidden>
+            <p class="path">skills/swarms-publish/SKILL.md</p>
+            <h3>swarms-publish</h3>
+            <p>Posts approved PR text after read-only checks, now or at a scheduled time.</p>
+            <dl><dt>Say</dt><dd><q>/swarms-publish</q> <span>starts only by name</span></dd><dt>Needs</dt><dd>gh</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-publish">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-prs" aria-labelledby="skt-swarms-prs" hidden>
+            <p class="path">skills/swarms-prs/SKILL.md</p>
+            <h3>swarms-prs</h3>
+            <p>Builds the end-of-day Discord message that lists the PRs I opened today.</p>
+            <dl><dt>Say</dt><dd><q>swarms prs</q></dd><dt>Needs</dt><dd>gh</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-prs">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-standup" aria-labelledby="skt-swarms-standup" hidden>
+            <p class="path">skills/swarms-standup/SKILL.md</p>
+            <h3>swarms-standup</h3>
+            <p>Writes standup notes for each PR I opened today. A fresh agent explains each PR and runs the code to back it up.</p>
+            <dl><dt>Say</dt><dd><q>standup notes</q></dd><dt>Needs</dt><dd>Claude Code, gh, local clones</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-standup">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-retro" aria-labelledby="skt-swarms-retro" hidden>
+            <p class="path">skills/swarms-retro/SKILL.md</p>
+            <h3>swarms-retro</h3>
+            <p>Proposes up to three changes a week to these skills, from the outcomes ledger and the week's transcripts.</p>
+            <dl><dt>Say</dt><dd><q>swarms retro</q></dd><dt>Needs</dt><dd>gh</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-retro">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-swarms-tools" aria-labelledby="skt-swarms-tools" hidden>
+            <p class="path">skills/swarms-tools/SKILL.md</p>
+            <h3>swarms-tools</h3>
+            <p>The CLI the other swarms skills share: PR facts, worktrees, proof runs, code scans, the outcomes ledger and publishing.</p>
+            <dl><dt>Used by</dt><dd>every other swarms skill</dd><dt>Needs</dt><dd>Python 3.10+, gh</dd></dl>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/swarms-tools">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-full-stop" aria-labelledby="skt-full-stop" hidden>
+            <p class="path">skills/full-stop/SKILL.md</p>
+            <h3>full-stop</h3>
+            <p>Takes a change to a PR that's ready to merge, without merging.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/full-stop">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-full-send" aria-labelledby="skt-full-send" hidden>
+            <p class="path">skills/full-send/SKILL.md</p>
+            <h3>full-send</h3>
+            <p>The same, and merges. For repos I can merge in.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/full-send">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-sol-loop" aria-labelledby="skt-sol-loop" hidden>
+            <p class="path">skills/sol-loop/SKILL.md</p>
+            <h3>sol-loop</h3>
+            <p>Reviews a change with GPT Sol in a loop, up to three rounds.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/sol-loop">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-file-pr" aria-labelledby="skt-file-pr" hidden>
+            <p class="path">skills/file-pr/SKILL.md</p>
+            <h3>file-pr</h3>
+            <p>Files a short PR that leads with the problem.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder. I added one paragraph that runs unslop on the title and description.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/file-pr">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-babysit-pr" aria-labelledby="skt-babysit-pr" hidden>
+            <p class="path">skills/babysit-pr/SKILL.md</p>
+            <h3>babysit-pr</h3>
+            <p>Watches a PR through CI and review bots, and fixes the real findings.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/babysit-pr">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-modernize" aria-labelledby="skt-modernize" hidden>
+            <p class="path">skills/modernize/SKILL.md</p>
+            <h3>modernize</h3>
+            <p>Rebases an old PR and decides whether it should still exist.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/modernize">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-leaving-pr-comments" aria-labelledby="skt-leaving-pr-comments" hidden>
+            <p class="path">skills/leaving-pr-comments/SKILL.md</p>
+            <h3>leaving-pr-comments</h3>
+            <p>Formats comments an agent posts for me.</p>
+            <p class="credit">From <a href="https://github.com/t3dotgg/tstack">Theo Browne's tstack</a>, MIT. Its license is in the folder.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/leaving-pr-comments">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-unslop" aria-labelledby="skt-unslop" hidden>
+            <p class="path">skills/unslop/SKILL.md</p>
+            <h3>unslop</h3>
+            <p>Removes AI tells from writing.</p>
+            <p class="credit">From <a href="https://github.com/cursor/plugins/tree/main/pstack/skills/unslop">Lauren Tan's pstack</a>, MIT. Its license is in the folder. I added one file that keeps it explicit-only in Codex.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/tree/main/skills/unslop">Read the skill ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-agents-md" aria-labelledby="skt-agents-md" hidden>
+            <p class="path">AGENTS.md</p>
+            <h3>AGENTS.md</h3>
+            <p>One instruction file for both agents on both machines. Claude Code imports it and Codex reads it directly, so a rule I add there reaches every session.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/blob/main/AGENTS.md">Open on GitHub ↗</a>
+          </article>
+          <article role="tabpanel" id="sk-scripts-check_skills-py" aria-labelledby="skt-scripts-check_skills-py" hidden>
+            <p class="path">scripts/check_skills.py</p>
+            <h3>check_skills.py</h3>
+            <p>Checks every skill's frontmatter, invocation settings, links, swarms.py calls and writing rules. CI runs it and the unit tests on every pull request, on Linux, macOS and Windows.</p>
+            <a class="btn" href="https://github.com/Kpeguero16/skills/blob/main/scripts/check_skills.py">Open on GitHub ↗</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <section class="sec hello" id="hello" aria-labelledby="say">
     <h2 class="say pop" id="say">Say hello</h2>
