@@ -601,10 +601,31 @@ compose.addEventListener('submit', e => {
   const f = new FormData(compose);
   location.href = `mailto:${f.get('to')}?subject=${encodeURIComponent(f.get('subject'))}&body=${encodeURIComponent(f.get('body'))}`;
 });
-$('#copyAddr').addEventListener('click', () => {
-  const v = compose.elements.to.value;
+// copies text and says so; where the clipboard is blocked, the toast shows the text to copy by hand
+const copy = text => {
   const done = msg => { toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1500); };
-  (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(() => done('Copied!'), () => done(v));
+  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => done('Copied!'), () => done(text));
+};
+$('#copyAddr').addEventListener('click', () => copy(compose.elements.to.value));
+
+/* ── agent skills: the file tree opens one file at a time ── */
+$('#copyInstall').addEventListener('click', () => copy('npx skills add Kpeguero16/skills -g'));
+const skTabs = $$('#skills [role="tab"]');
+const openSkill = (tab, focus) => {
+  skTabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+  });
+  if (focus) tab.focus();
+};
+skTabs.forEach((t, i) => {
+  t.addEventListener('click', () => { openSkill(t); blip(560 + (i % 9) * 40, .04, 'sine', .06); });
+  t.addEventListener('keydown', e => {
+    const to = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: skTabs.length - 1 }[e.key];
+    if (to === undefined) return;
+    e.preventDefault(); openSkill(skTabs[(to + skTabs.length) % skTabs.length], true);
+  });
 });
 window.__siteReady = true; // tells the fallback in index.html the page set itself up
 })();

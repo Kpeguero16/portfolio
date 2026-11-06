@@ -28,6 +28,22 @@
 - [MedVoyage](https://kpeguero16.github.io/MedVoyage/): A medical-diagnosis web app the team built front to back in a weekend, with parallax-scroll animations. HTML, CSS, JavaScript, Git. Source: https://github.com/Kpeguero16/MedVoyage
 - [365 Days](https://github.com/Kpeguero16/365Days): A digital anniversary album with date-gated entry. A Node.js pipeline renames, compresses and tracks 500+ media files, 1.3 GB, through Git LFS. 100 Lighthouse scores for performance and accessibility. HTML, CSS, JavaScript, Node.js, Git LFS.
 
+## Agent skills
+
+[Kpeguero16/skills](https://github.com/Kpeguero16/skills) holds the skills Khalil uses with Claude Code and Codex, MIT licensed. Install them with `npx skills add Kpeguero16/skills -g`. Khalil wrote the nine that run his Swarms work:
+
+- swarms-status ("morning status"): gives each open PR a verdict: wait, nudge, rebase, rework or close.
+- swarms-picks ("today's picks"): finds the day's PR opportunities, ranks them by what has merged before, and writes a brief for each.
+- swarms-own ("own it, full stop"): takes one brief from proof to a PR that's ready for the maintainer, stopping once for Khalil's approval of the text.
+- verify-swarms ("verify"): runs swarms code offline and proves a change red on the base and green on the branch.
+- swarms-publish (/swarms-publish): posts approved PR text after read-only checks, now or at a scheduled time.
+- swarms-prs ("swarms prs"): builds the end-of-day Discord message that lists the PRs Khalil opened that day.
+- swarms-standup ("standup notes"): writes standup notes for each PR opened that day. A fresh agent explains each PR and runs the code to back it up.
+- swarms-retro ("swarms retro"): proposes up to three changes a week to the skills, from the outcomes ledger and the week's transcripts.
+- swarms-tools: the CLI the other swarms skills share, for PR facts, worktrees, proof runs, code scans, the outcomes ledger and publishing.
+
+The repo also carries seven skills from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) and unslop from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack/skills/unslop), each with its MIT license.
+
 ## Merged PRs
 
 - [Swarms code PRs](https://github.com/kyegomez/swarms/pulls?q=is%3Apr+is%3Amerged+author%3AKpeguero16): the live list on GitHub.

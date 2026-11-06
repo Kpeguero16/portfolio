@@ -202,6 +202,39 @@ main { background: var(--card); position: relative; z-index: 7 }
 .dock button::after { content: ""; position: absolute; bottom: 3px; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); opacity: 0; transform: translateX(-50%); transition: opacity .2s }
 .dock button.open::after { opacity: 1 }
 
+/* agent skills: a window onto the skills repo, one file open at a time */
+.repo { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 40px 80px -42px rgba(var(--shade), .45) }
+.repo-install { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line) }
+.repo-install code { flex: 1 1 260px; min-width: 0; overflow-wrap: anywhere; font-family: var(--mono); font-size: 13.5px; background: var(--paper); border: 1px solid var(--line); border-radius: 9px; padding: 9px 12px }
+.repo-install code span { color: var(--ink-3) }
+.repo-grid { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: 460px }
+.repo-tree { border-right: 1px solid var(--line); padding: 10px 0 14px }
+.repo-tree .dir { display: block; padding: 6px 18px; font-family: var(--mono); font-size: 12px; color: var(--ink-3) }
+.repo-tree [role="tab"] { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: flex; align-items: center; gap: 8px; padding: 6px 18px 6px 32px; font-family: var(--mono); font-size: 13px; color: var(--ink-3) }
+.repo-tree .mine { color: var(--ink) }
+.repo-tree .mine::before { content: ""; width: 7px; height: 7px; margin-left: -15px; border-radius: 50%; background: var(--orange) }
+.repo-tree .first { margin-top: 14px }
+.repo-tree [role="tab"]:hover { background: var(--paper) }
+.repo-tree [role="tab"][aria-selected="true"] { background: var(--ink); color: var(--card) }
+.repo-tree [role="tab"]:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px }
+.repo-tree em { margin-left: auto; font-style: normal; font-size: 10.5px }
+.repo-view { min-width: 0; padding: 26px clamp(20px, 3vw, 40px) 30px }
+.repo-view .path { margin: 0 0 14px; font-family: var(--mono); font-size: 12px; color: var(--ink-3) }
+.repo-view h3 { margin: 0 0 10px; font-family: var(--mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: 500; letter-spacing: -.02em }
+.repo-view p { margin: 0 0 18px; max-width: 560px; font-size: 19px; line-height: 1.5; color: var(--ink-2) }
+.repo-view .credit { font-size: 15px; color: var(--ink-3) }
+.repo-view .credit a { text-decoration: underline; text-underline-offset: .2em }
+.repo-view dl { display: grid; grid-template-columns: 70px 1fr; gap: 8px 14px; margin: 0 0 22px; font-size: 15px }
+.repo-view dt { padding-top: 2px; font-family: var(--mono); font-size: 12px; color: var(--ink-3) }
+.repo-view dd { margin: 0 }
+.repo-view q { font-family: var(--mono); font-size: 14px; background: var(--yellow); color: var(--on-fill); padding: 2px 7px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone }
+.repo-view dd span { margin-left: 6px; font-family: var(--mono); font-size: 12px; color: var(--ink-3) }
+/* without the script, every file shows, one after another */
+.no-js .repo-tree { display: none }
+.no-js .repo-grid { grid-template-columns: 1fr }
+.no-js .repo-view [role="tabpanel"][hidden] { display: block }
+.no-js .repo-view [role="tabpanel"] + [role="tabpanel"] { margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line) }
+
 /* contact */
 .hello { text-align: center; padding-bottom: 110px }
 .say { font-size: clamp(76px, 14vw, 220px); line-height: .9; letter-spacing: -.055em; font-weight: 800; margin: 0 0 18px; cursor: default; user-select: none }
@@ -250,6 +283,10 @@ footer { position: relative; z-index: 7; border-top: 1px solid var(--line); padd
   .win .win-bar { cursor: default }
   .win-close { pointer-events: none }
   .dock, .desk-only { display: none }
+  .repo-grid { grid-template-columns: 1fr; min-height: 0 }
+  .repo-tree { border-right: 0; border-bottom: 1px solid var(--line); max-height: 230px; overflow-y: auto }
+  .repo-view dl { grid-template-columns: 1fr; gap: 4px }
+  .repo-view dd + dt { margin-top: 8px }
   .nav .right a { padding: 7px 9px }
   .nav .right a.hide-sm, .sound span, .wave { display: none }
   .compose label { grid-template-columns: 64px 1fr }
