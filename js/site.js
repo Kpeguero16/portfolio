@@ -234,9 +234,24 @@ function readTheme() {
   Object.assign(C, { ink: v('--ink', '#17150f'), ink2: v('--ink-2', '#5b564a'), line: v('--line', '#ddd5c3'), card: v('--card', '#fffdf8'), paper: v('--paper', '#f3efe6') });
   palette[4] = `rgba(${[1, 3, 5].map(i => parseInt(C.ink.slice(i, i + 2), 16))},.55)`; // the swarm's ink-colored agents
 }
-readTheme();
-const mqDark = matchMedia('(prefers-color-scheme: dark)');
-mqDark.addEventListener ? mqDark.addEventListener('change', readTheme) : mqDark.addListener(readTheme); // Safari 13 has only addListener
+/* ── theme: follows the system until the visitor picks one with the nav toggle; index.html applies a saved pick before first paint ── */
+const mqDark = matchMedia('(prefers-color-scheme: dark)'), themeBtn = $('#theme'), html = document.documentElement;
+const redraws = []; // canvases that don't redraw every frame (reduced motion) repaint here after a switch
+function syncTheme() {
+  const dark = html.dataset.theme ? html.dataset.theme === 'dark' : mqDark.matches;
+  themeBtn.setAttribute('aria-pressed', String(dark));
+  themeBtn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+  readTheme(); redraws.forEach(f => f());
+}
+themeBtn.addEventListener('click', () => {
+  const next = themeBtn.getAttribute('aria-pressed') === 'true' ? 'light' : 'dark';
+  html.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch (e) { /* storage blocked: the pick lasts until reload */ }
+  $$('meta[name="theme-color"]').forEach(m => { m.content = next === 'dark' ? '#14120d' : '#f3efe6'; });
+  syncTheme(); blip(next === 'dark' ? 440 : 660, .06, 'sine', .08);
+});
+syncTheme();
+mqDark.addEventListener ? mqDark.addEventListener('change', syncTheme) : mqDark.addListener(syncTheme); // Safari 13 has only addListener
 let SW = 0, SH = 0, phase = reduce ? 'free' : 'form', t0 = performance.now(), relAt = 0, rained = false, fetchIdx = 0;
 const pointer = { x: -1e4, y: -1e4, on: false };
 const tasks = [], rings = [];
@@ -371,6 +386,7 @@ function skyFrame(now) {
   }
   if (!reduce) requestAnimationFrame(skyFrame);
 }
+redraws.push(() => { if (reduce) requestAnimationFrame(skyFrame); });
 pin.addEventListener('pointermove', e => { const q = local(e); pointer.x = q.x; pointer.y = q.y; pointer.on = true; }, { passive: true });
 pin.addEventListener('pointerleave', () => { pointer.on = false; });
 pin.addEventListener('pointerdown', e => {
@@ -518,6 +534,7 @@ function demo(cv) {
   let w = 0, h = 0, on = false, t = 0;
   const size = () => { const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); w = r.width; h = r.height; cv.width = w * d; cv.height = h * d; c.setTransform(d, 0, 0, d, 0, 0); };
   size(); new ResizeObserver(() => { size(); if (reduce && on) draw(); }).observe(cv);
+  redraws.push(() => { if (reduce && on) draw(); });
   const label = s => { c.fillStyle = C.ink2; c.font = `500 10.5px ${MONO}`; c.textAlign = 'left'; c.fillText(s, 10, 17); };
   const candles = []; let v = 50;
   const pushCandle = () => { const o = v; v += (Math.random() - .47) * 4; candles.push({ o, c: v, hi: Math.max(o, v) + Math.random() * 2, lo: Math.min(o, v) - Math.random() * 2 }); };

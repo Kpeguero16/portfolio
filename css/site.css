@@ -11,13 +11,21 @@
   color-scheme: light dark;
 }
 /* paper at night: warm ink-black, light ink, the same orange and block colors.
-   Every text color keeps 4.5:1 on --card and --paper. js/site.js reads these for the canvases. */
+   Every text color keeps 4.5:1 on --card and --paper. js/site.js reads these for the canvases.
+   It follows the system setting unless the nav toggle set data-theme on <html>.
+   The two dark blocks must stay identical. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #14120d; --card: #1c1a14; --ink: #f3efe6; --ink-2: #c9c2b2; --ink-3: #9d9684; --line: #36322a; --chore: #2a2720;
     --glass: rgba(28, 26, 20, .8); --shade: 0, 0, 0; --press: #8f8877;
   }
 }
+:root[data-theme="dark"] {
+  --paper: #14120d; --card: #1c1a14; --ink: #f3efe6; --ink-2: #c9c2b2; --ink-3: #9d9684; --line: #36322a; --chore: #2a2720;
+  --glass: rgba(28, 26, 20, .8); --shade: 0, 0, 0; --press: #8f8877;
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light }
 * { box-sizing: border-box }
 html { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased }
 body { margin: 0; overflow-x: hidden }
@@ -41,10 +49,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .nav .right { display: flex; align-items: center; gap: 4px; background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 999px; padding: 5px }
 .nav .right a { padding: 7px 13px; border-radius: 999px; color: var(--ink-2); transition: background .25s, color .25s, transform .35s var(--spring) }
 .nav .right a:hover { background: var(--ink); color: var(--card); transform: translateY(-1px) }
-.sound { all: unset; cursor: pointer; display: flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 999px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); background: var(--paper) }
-.sound:hover { color: var(--ink) }
-.sound:focus-visible { outline: 2px solid var(--orange) }
-.sound svg { width: 15px; height: 15px }
+.sound, .theme { all: unset; cursor: pointer; display: flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 999px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); background: var(--paper) }
+.sound:hover, .theme:hover { color: var(--ink) }
+.sound:focus-visible, .theme:focus-visible { outline: 2px solid var(--orange) }
+.sound svg, .theme svg { width: 15px; height: 15px }
+/* the theme toggle shows the current theme: a sun in light, a moon in dark */
+.theme { padding: 7px 9px }
+.theme .moon, .theme[aria-pressed="true"] .sun { display: none } .theme[aria-pressed="true"] .moon { display: inline }
+.no-js .theme { display: none }
+@media (max-width: 960px) { .sound span { display: none } } /* room for the toggle beside the full nav */
 .sound[aria-pressed="true"] { background: var(--orange); color: var(--on-fill) }
 .sound .on { display: none } .sound[aria-pressed="true"] .on { display: inline } .sound[aria-pressed="true"] .off { display: none }
 
