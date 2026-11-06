@@ -1,0 +1,26 @@
+/* PROTOTYPE(transition): throwaway. Variants B and C of the hero-to-experience transition, and the switcher bar.
+   js/prototype-transition.js sets data-variant on <html> from ?variant=, on localhost only. Variant A is css/site.css as is.
+   Delete this file once a variant wins. */
+
+/* B and C on desktop: no pinned stage, no terminal; the hero is one screen and experience starts under it.
+   The query is the inverse of the phone query in css/site.css, where every variant already works this way. */
+@media (min-width: 821px) and (min-height: 561px) {
+  :root[data-variant="B"] .stage, :root[data-variant="C"] .stage { height: auto }
+  :root[data-variant="B"] .pin, :root[data-variant="C"] .pin { position: relative; height: 100vh }
+  :root[data-variant="B"] .win-rise, :root[data-variant="C"] .win-rise,
+  :root[data-variant="B"] .hint, :root[data-variant="C"] .hint { display: none }
+  :root[data-variant="B"] .exp, :root[data-variant="C"] .exp { margin-top: 0; border-radius: 0; box-shadow: none }
+  /* B: the blocks fall past the hero's bottom edge and over experience; the sides stay clipped so a block on a wall can't scroll the page sideways */
+  :root[data-variant="B"] .pin { overflow: clip visible }
+  :root[data-variant="B"] .world { z-index: 8 }
+  :root[data-variant="B"] .world.falling .blk { pointer-events: none }
+}
+
+/* the switcher: high contrast on purpose, so it never reads as part of the design */
+.proto-bar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 1000; max-width: calc(100vw - 32px); display: flex; align-items: center; gap: 2px; padding: 5px;
+  border-radius: 999px; background: #0b0b0b; color: #fff; font: 500 12px/1 ui-monospace, Menlo, monospace; box-shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .14) }
+.proto-bar button { all: unset; cursor: pointer; flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; font-size: 14px }
+.proto-bar button:hover { background: rgba(255, 255, 255, .16) }
+.proto-bar button:focus-visible { outline: 2px solid #ff5a1f }
+.proto-bar span { padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.proto-bar b { color: #ff7a45 }
