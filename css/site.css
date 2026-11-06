@@ -2,11 +2,21 @@
 :root {
   --paper: #f3efe6; --card: #fffdf8; --ink: #17150f; --ink-2: #5b564a; --ink-3: #706a5c; --line: #ddd5c3;
   --orange: #ff5a1f; --blue: #2f6bff; --green: #17a05d; --violet: #7a5cff; --yellow: #ffc933; --chore: #f7f2e7;
+  --glass: rgba(255, 253, 248, .8); --shade: 60, 45, 20; --press: #000; --on-yellow: #17150f;
   --sans: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --m: clamp(20px, 5vw, 72px);
   --spring: cubic-bezier(.34, 1.56, .64, 1);
   --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: light dark;
+}
+/* paper at night: warm ink-black, light ink, the same orange and block colors.
+   Every text color keeps 4.5:1 on --card and --paper. js/site.js reads these for the canvases. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14120d; --card: #1c1a14; --ink: #f3efe6; --ink-2: #c9c2b2; --ink-3: #9d9684; --line: #36322a; --chore: #2a2720;
+    --glass: rgba(28, 26, 20, .8); --shade: 0, 0, 0; --press: #8f8877;
+  }
 }
 * { box-sizing: border-box }
 html { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased }
@@ -28,7 +38,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .wave { display: inline-block; transform-origin: 70% 80% }
 .me:hover .wave { animation: wave 1s var(--ease) }
 @keyframes wave { 20% { transform: rotate(18deg) } 40% { transform: rotate(-10deg) } 60% { transform: rotate(14deg) } 80% { transform: rotate(-4deg) } }
-.nav .right { display: flex; align-items: center; gap: 4px; background: rgba(255, 253, 248, .78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 999px; padding: 5px }
+.nav .right { display: flex; align-items: center; gap: 4px; background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 999px; padding: 5px }
 .nav .right a { padding: 7px 13px; border-radius: 999px; color: var(--ink-2); transition: background .25s, color .25s, transform .35s var(--spring) }
 .nav .right a:hover { background: var(--ink); color: var(--card); transform: translateY(-1px) }
 .sound { all: unset; cursor: pointer; display: flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 999px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); background: var(--paper) }
@@ -75,7 +85,7 @@ h1.name { font-size: min(11vw, 18vh, 172px); line-height: .95; letter-spacing: -
 
 /* the terminal window: parked under the fold, rises and fills the screen on scroll */
 .win-rise { position: absolute; z-index: 5; width: min(64vw, 820px); left: calc(50% - min(64vw, 820px) / 2); top: calc(100% + 60px); aspect-ratio: 16 / 10;
-  background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(60, 45, 20, .4) }
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(var(--shade), .4) }
 .bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11.5px; color: var(--ink-3) }
 .term { margin: 0; padding: 14px 16px; font-family: var(--mono); font-size: clamp(10px, .85vw, 12.5px); line-height: 1.8; color: var(--ink-2); white-space: pre-wrap; height: calc(100% - 37px); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start }
 .term .drop { background: rgba(23, 160, 93, .12); border-radius: 4px; padding: 0 5px }
@@ -89,7 +99,7 @@ h1.name { font-size: min(11vw, 18vh, 172px); line-height: .95; letter-spacing: -
 .world.off .blk { visibility: hidden; pointer-events: none }
 .blk .bt { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; opacity: .82 }
 .blk.t-CHORE { background: var(--chore); color: var(--ink); border: 1px solid var(--line) }
-.blk.t-DOCS { color: var(--ink) }
+.blk.t-DOCS { color: var(--on-yellow) }
 .blk.t-CHORE .bt, .blk.t-DOCS .bt { opacity: .6 }
 .blk.fresh { animation: fresh 1.6s ease-out }
 @keyframes fresh { 0% { outline: 3px solid var(--orange); outline-offset: 3px } 100% { outline: 3px solid transparent; outline-offset: 10px } }
@@ -100,7 +110,7 @@ h1.name { font-size: min(11vw, 18vh, 172px); line-height: .95; letter-spacing: -
 .tip .ps, .tip .dim { color: #8f897b } .tip .cmd { color: #fffdf8 } .tip .ok, .tip .drop { color: #3ddc84 } .tip .bad { color: #ff8a5c }
 
 /* ── experience: a sheet that slides up over the full-screen terminal ── */
-.exp { position: relative; z-index: 7; margin-top: -100vh; min-height: 100vh; background: var(--card); border-radius: 22px 22px 0 0; box-shadow: 0 -30px 60px -30px rgba(60, 45, 20, .25) }
+.exp { position: relative; z-index: 7; margin-top: -100vh; min-height: 100vh; background: var(--card); border-radius: 22px 22px 0 0; box-shadow: 0 -30px 60px -30px rgba(var(--shade), .25) }
 .exp .bar { padding: 18px var(--m) 14px }
 .tl-grid { display: grid; grid-template-columns: minmax(280px, .8fr) 1.45fr; gap: clamp(30px, 5vw, 90px); padding: clamp(40px, 6vw, 80px) var(--m) clamp(70px, 9vw, 120px); max-width: 1380px; margin: 0 auto }
 .tl-grid > *, .tl-latest a { min-width: 0 }
@@ -147,8 +157,8 @@ main { background: var(--card); position: relative; z-index: 7 }
 
 /* projects: windows on a desktop */
 .desk { position: relative; height: 940px; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--paper) radial-gradient(circle, var(--line) 1.1px, transparent 1.5px) 0 0 / 22px 22px }
-.win { position: absolute; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 30px 60px -32px rgba(60, 45, 20, .38), 0 8px 16px -10px rgba(60, 45, 20, .18); transition: transform .45s var(--spring), opacity .3s, box-shadow .3s }
-.win.dragging { transition: none; transform: rotate(-1.2deg) scale(1.015); box-shadow: 0 46px 90px -34px rgba(60, 45, 20, .5) }
+.win { position: absolute; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 30px 60px -32px rgba(var(--shade), .38), 0 8px 16px -10px rgba(var(--shade), .18); transition: transform .45s var(--spring), opacity .3s, box-shadow .3s }
+.win.dragging { transition: none; transform: rotate(-1.2deg) scale(1.015); box-shadow: 0 46px 90px -34px rgba(var(--shade), .5) }
 .win.closed { opacity: 0; transform: scale(.86) translateY(30px); pointer-events: none }
 .win.bump { animation: bump .55s var(--spring) }
 @keyframes bump { 0% { transform: scale(.9) } 100% { transform: none } }
@@ -170,7 +180,7 @@ main { background: var(--card); position: relative; z-index: 7 }
 .stamp::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, .7) }
 .stamp.blue { background: var(--blue); box-shadow: 0 8px 16px -8px rgba(47, 107, 255, .6) }
 .win:hover .stamp { transform: rotate(-8deg) scale(1.08) }
-.dock { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 4px; padding: 7px; z-index: 200; background: rgba(255, 253, 248, .85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 30px -18px rgba(60, 45, 20, .4) }
+.dock { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 4px; padding: 7px; z-index: 200; background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 30px -18px rgba(var(--shade), .4) }
 .dock button { all: unset; cursor: pointer; position: relative; display: flex; align-items: center; gap: 8px; padding: 8px 12px 10px; border-radius: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); white-space: nowrap; transition: transform .35s var(--spring), background .2s }
 .dock button:hover, .dock button:focus-visible { transform: translateY(-5px); background: var(--paper); color: var(--ink) }
 .dock button i { width: 16px; height: 16px; border-radius: 5px; background: var(--dot) }
@@ -195,7 +205,7 @@ main { background: var(--card); position: relative; z-index: 7 }
 .say span { display: inline-block; transition: transform .5s var(--spring), color .3s }
 .say span.up { transform: translateY(-.14em) rotate(-4deg); color: var(--orange); transition: transform .12s ease-out, color .1s }
 .hello > p { font-size: 20px; color: var(--ink-2); margin: 0 auto 28px; max-width: 560px; line-height: 1.5 }
-.compose { max-width: 640px; margin: 0 auto; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 40px 80px -42px rgba(60, 45, 20, .45) }
+.compose { max-width: 640px; margin: 0 auto; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 40px 80px -42px rgba(var(--shade), .45) }
 .compose form { padding: 6px 18px 18px }
 .compose label { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; color: var(--ink-3) }
 .compose label.body { grid-template-columns: 1fr; align-items: start; border: 0 }
@@ -204,12 +214,12 @@ main { background: var(--card); position: relative; z-index: 7 }
 .compose textarea { min-height: 120px; line-height: 1.5; white-space: pre-wrap }
 .compose textarea::placeholder { color: var(--ink-3) }
 .compose .row { display: flex; align-items: center; gap: 10px; margin-top: 6px }
-.send { all: unset; cursor: pointer; font-weight: 650; font-size: 17px; padding: 11px 20px; border-radius: 12px; background: var(--ink); color: var(--card); box-shadow: 0 5px 0 #000; transition: transform .2s var(--spring), box-shadow .15s }
-.send:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #000 }
-.send:active { transform: translateY(4px); box-shadow: 0 1px 0 #000 }
+.send { all: unset; cursor: pointer; font-weight: 650; font-size: 17px; padding: 11px 20px; border-radius: 12px; background: var(--ink); color: var(--card); box-shadow: 0 5px 0 var(--press); transition: transform .2s var(--spring), box-shadow .15s }
+.send:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--press) }
+.send:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--press) }
 .send:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 12px }
 .elsewhere { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 30px }
-.toast { position: fixed; left: 50%; top: 84px; z-index: 60; transform: translate(-50%, -10px) rotate(-3deg) scale(.9); opacity: 0; background: var(--yellow); color: var(--ink); font-weight: 700; padding: 10px 18px; border-radius: 12px; box-shadow: 0 10px 20px -10px rgba(0, 0, 0, .4); transition: opacity .2s, transform .5s var(--spring); pointer-events: none }
+.toast { position: fixed; left: 50%; top: 84px; z-index: 60; transform: translate(-50%, -10px) rotate(-3deg) scale(.9); opacity: 0; background: var(--yellow); color: var(--on-yellow); font-weight: 700; padding: 10px 18px; border-radius: 12px; box-shadow: 0 10px 20px -10px rgba(0, 0, 0, .4); transition: opacity .2s, transform .5s var(--spring); pointer-events: none }
 .toast.show { opacity: 1; transform: translate(-50%, 0) rotate(-3deg) scale(1) }
 footer { position: relative; z-index: 7; border-top: 1px solid var(--line); padding: 30px var(--m) 46px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); background: var(--card) }
 

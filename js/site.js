@@ -227,6 +227,16 @@ const X = new Float32Array(NA), Y = new Float32Array(NA), VX = new Float32Array(
 const HX = new Float32Array(NA), HY = new Float32Array(NA), TX = new Float32Array(NA), TY = new Float32Array(NA);
 const HAS = new Uint8Array(NA), TASK = new Int16Array(NA).fill(-1), ARR = new Uint8Array(NA), SEED = new Float32Array(NA), COL = new Uint8Array(NA);
 const palette = ['rgba(255,90,31,.8)', 'rgba(47,107,255,.8)', 'rgba(23,160,93,.8)', 'rgba(122,92,255,.8)', 'rgba(23,21,15,.55)'];
+// canvas colors; the paper and ink ones come from css/site.css, so they follow the light or dark palette
+const C = { orange: '#ff5a1f', blue: '#2f6bff', green: '#17a05d', violet: '#7a5cff', yellow: '#ffc933' };
+function readTheme() {
+  const s = getComputedStyle(document.documentElement), v = (n, light) => s.getPropertyValue(n).trim() || light;
+  Object.assign(C, { ink: v('--ink', '#17150f'), ink2: v('--ink-2', '#5b564a'), line: v('--line', '#ddd5c3'), card: v('--card', '#fffdf8'), paper: v('--paper', '#f3efe6') });
+  palette[4] = `rgba(${[1, 3, 5].map(i => parseInt(C.ink.slice(i, i + 2), 16))},.55)`; // the swarm's ink-colored agents
+}
+readTheme();
+const mqDark = matchMedia('(prefers-color-scheme: dark)');
+mqDark.addEventListener ? mqDark.addEventListener('change', readTheme) : mqDark.addListener(readTheme); // Safari 13 has only addListener
 let SW = 0, SH = 0, phase = reduce ? 'free' : 'form', t0 = performance.now(), relAt = 0, rained = false, fetchIdx = 0;
 const pointer = { x: -1e4, y: -1e4, on: false };
 const tasks = [], rings = [];
@@ -356,7 +366,7 @@ function skyFrame(now) {
     if (a > 1) { rings.splice(r, 1); continue; }
     sx.globalAlpha = 1 - a; sx.strokeStyle = '#ff5a1f'; sx.lineWidth = 2 * (1 - a) + .5;
     sx.beginPath(); sx.arc(g.x, g.y, 30 + a * 90, 0, Math.PI * 2); sx.stroke();
-    if (g.label) { sx.fillStyle = '#17150f'; sx.font = '500 12px "IBM Plex Mono", monospace'; sx.textAlign = 'center'; sx.fillText(g.label, g.x, g.y - 40 - a * 26); }
+    if (g.label) { sx.fillStyle = C.ink; sx.font = '500 12px "IBM Plex Mono", monospace'; sx.textAlign = 'center'; sx.fillText(g.label, g.x, g.y - 40 - a * 26); }
     sx.globalAlpha = 1;
   }
   if (!reduce) requestAnimationFrame(skyFrame);
@@ -502,7 +512,6 @@ $$('#say span').forEach((s, i) => s.addEventListener('pointerenter', () => {
 }));
 
 /* ── project window demos: small illustrative loops ── */
-const C = { ink: '#17150f', ink2: '#5b564a', line: '#ddd5c3', orange: '#ff5a1f', blue: '#2f6bff', green: '#17a05d', violet: '#7a5cff', card: '#fffdf8', paper: '#f3efe6', yellow: '#ffc933' };
 const MONO = '"IBM Plex Mono", monospace';
 function demo(cv) {
   const kind = cv.dataset.demo, c = cv.getContext('2d');
