@@ -5,12 +5,11 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const mqFlow = matchMedia('(max-width: 820px), (max-height: 560px)'); // same query as the CSS
-let FLOW = mqFlow.matches; // phones and short screens: no pinned zoom
+let FLOW = mqFlow.matches; // phones and short screens: smaller blocks, and the floor never drops
 // don't let a slow font file hold the whole hero back
 const fontsReady = Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]);
 const PRS = window.PRS || [];
@@ -78,8 +77,10 @@ const fetchList = pool.slice(rainList.length + termCount);
 const onFloor = $('#onFloor');
 const PACK = .5; // how much of the floor area a settled pile covers
 const prUrl = p => p.url || `https://github.com/kyegomez/swarms/pull/${p.n}`;
-let engine = null, W = 0, H = 0, walls = [], drag = null;
+let engine = null, W = 0, H = 0, walls = [], drag = null, floorOpen = false;
 const blocks = [];
+// a parked block is out of the physics and hidden: it fell off the screen, or was made while the floor was open
+const park = b => { b.parked = true; M.Composite.remove(engine.world, b.body); b.el.style.visibility = 'hidden'; };
 const partial = pool.length < PRS.length; // phones get only the newest blocks
 if (partial) { // say "the newest 14" so it doesn't read as a second total under the hero's count
   const total = $('.readout .count b:last-child');
@@ -113,6 +114,7 @@ function makeBlock(p, x, y, vy = 0, fresh = false) {
   el.addEventListener('pointerleave', hideTip);
   el.addEventListener('keydown', e => { if (e.key === 'Enter') open(prUrl(p), '_blank', 'noopener'); });
   blocks.push(b);
+  if (floorOpen) park(b); // it would fall across whatever the visitor is reading; it rains in with the rest at the top
   onFloor.textContent = blocks.length;
   return b;
 }
@@ -127,6 +129,7 @@ function buildWalls() {
     M.Bodies.rectangle(W + t / 2, H / 2, t, H * 4, { isStatic: true }),
   ];
   M.Composite.add(engine.world, walls);
+  if (floorOpen) { M.Composite.remove(engine.world, walls[0]); return; } // the blocks are falling or gone, so leave them be
   for (const b of blocks) {
     const { x, y } = b.body.position, nx = clamp(x, b.w / 2 + 4, W - b.w / 2 - 4), ny = Math.min(y, H - b.h / 2 - 4);
     if (nx !== x || ny !== y) { M.Body.setPosition(b.body, { x: nx, y: ny }); M.Body.setVelocity(b.body, { x: 0, y: 0 }); }
@@ -186,32 +189,50 @@ function physicsFrame(now) {
   const dt = Math.min(1000 / 60, now - lastT); lastT = now;
   if (M && physicsOn) {
     M.Engine.update(engine, dt);
+    const parkY = scrollY + innerHeight + 120; // below the bottom of the screen
     for (const b of blocks) {
+      if (b.parked) continue;
       const { x, y } = b.body.position;
-      if (y > H + 300) { M.Body.setPosition(b.body, { x: W * .5, y: -80 }); M.Body.setVelocity(b.body, { x: 0, y: 0 }); }
+      if (floorOpen) { if (y > parkY) { park(b); continue; } }
+      else if (y > H + 300) { M.Body.setPosition(b.body, { x: W * .5, y: -80 }); M.Body.setVelocity(b.body, { x: 0, y: 0 }); }
       b.el.style.transform = `translate(${(x - b.w / 2).toFixed(1)}px, ${(y - b.h / 2).toFixed(1)}px) rotate(${b.body.angle.toFixed(4)}rad)`;
     }
   }
   requestAnimationFrame(physicsFrame);
 }
 requestAnimationFrame(physicsFrame);
-
-/* ── status line and the rising terminal: replay recent merges ── */
-const term = $('#term'), ticker = $('#ticker'), tickerLine = $('#tickerLine');
-let termIdx = 0, lineQ = [];
-function addLine(html) {
-  term.insertAdjacentHTML('beforeend', `<div>${html}</div>`);
-  while (term.children.length > 14) term.firstElementChild.remove();
+// the first scroll knocks the floor out and the pile tumbles down over experience;
+// back at the top, the floor returns and the blocks rain in again
+function setFloor(open) {
+  if (!M || open === floorOpen) return;
+  floorOpen = open; world.classList.toggle('falling', open);
+  if (open) {
+    hideTip(); if (drag) { M.Composite.remove(engine.world, drag.c); drag = null; }
+    M.Composite.remove(engine.world, walls[0]);
+    for (const b of blocks) M.Body.setVelocity(b.body, { x: (Math.random() - .5) * 4, y: -3 - Math.random() * 4 }); // a jolt, then the drop
+    blip(170, .1, 'triangle', .25);
+  } else {
+    M.Composite.add(engine.world, walls[0]);
+    blocks.forEach((b, i) => { // staggered by height, so they land one after another like the first rain
+      if (b.parked) { b.parked = false; M.Composite.add(engine.world, b.body); b.el.style.visibility = ''; }
+      M.Body.setPosition(b.body, { x: b.w / 2 + 20 + Math.random() * (W * .97 - b.w), y: -60 - i * 18 });
+      M.Body.setVelocity(b.body, { x: 0, y: 2 }); M.Body.setAngularVelocity(b.body, 0); M.Body.setAngle(b.body, (Math.random() - .5) * .6);
+    });
+  }
 }
+
+/* ── status line: replay recent merges ─────────────── */
+const ticker = $('#ticker'), tickerLine = $('#tickerLine');
+let termIdx = 0, lineQ = [];
 function termStep() {
   if (!lineQ.length) {
     const list = termList.length ? termList : ordered.slice(-4);
     if (!list.length) return;
-    if (termIdx >= list.length) { termIdx = 0; addLine('<span class="dim">replay</span>'); }
+    if (termIdx >= list.length) termIdx = 0;
     lineQ = scriptFor(list[termIdx++]);
   }
   const [html, drop] = lineQ.shift();
-  addLine(html); tickerLine.innerHTML = html;
+  tickerLine.innerHTML = html;
   if (drop && !blocks.some(b => b.p === drop)) {
     const tr = ticker.getBoundingClientRect(), pr = pin.getBoundingClientRect();
     makeBlock(drop, tr.left - pr.left + tr.width * (.2 + Math.random() * .6), tr.bottom - pr.top + 26, -3, true);
@@ -399,44 +420,23 @@ pin.addEventListener('pointerdown', e => {
 addEventListener('keydown', () => release(), { once: true });
 if (!fine) $('#howTo').innerHTML = '<kbd>drag</kbd> to throw · <kbd>tap</kbd> to open · tap empty space for another';
 
-/* ── scroll: the terminal window rises and fills the screen, then experience slides over it ── */
-const rise = $('#rise'), nav = $('#nav'), exp = $('#experience');
-let geo = null;
-function measureRise() {
-  if (FLOW) { geo = null; rise.style.transform = ''; return; }
-  const prev = rise.style.transform; rise.style.transform = 'none';
-  const pr = pin.getBoundingClientRect(), r = rise.getBoundingClientRect();
-  rise.style.transform = prev;
-  rise.style.transformOrigin = '50% 50%';
-  geo = { cx: r.left - pr.left + r.width / 2, cy: r.top - pr.top + r.height / 2, w: r.width, h: r.height };
-}
+/* ── scroll: the hero scrolls away, and on desktop the floor drops out from under the blocks ── */
+const nav = $('#nav'), exp = $('#experience');
 function render() {
-  const vh = innerHeight, y = scrollY;
-  if (FLOW) {
-    pin.style.setProperty('--p', '0'); world.classList.remove('off'); pin.classList.remove('gone');
-    const on = y < pin.offsetHeight; physicsOn = on; // the phone hero can be taller than the screen
-    const was = skyOn; skyOn = on; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
-  } else {
-    const p = clamp(y / (vh * 1.1));
-    const z = reduce ? (y > vh * .3 ? 1 : 0) : ease(clamp(y / (vh * .6))); // the terminal fills the screen by .6 screens of scroll
-    if (geo) {
-      const vw = pin.clientWidth, ph = pin.clientHeight, S = (vw / geo.w) * 1.02, cy = Math.max(ph / 2, geo.h * S / 2);
-      rise.style.transform = `translate(${(vw / 2 - geo.cx) * z}px, ${(cy - geo.cy) * z}px) scale(${1 + (S - 1) * z})`;
-    }
-    pin.style.setProperty('--p', p.toFixed(4));
-    const gone = p > .18; if (gone !== world.classList.contains('off')) { world.classList.toggle('off', gone); pin.classList.toggle('gone', gone); if (gone) hideTip(); }
-    physicsOn = y < vh * .35;
-    const was = skyOn; skyOn = y < vh * .35; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
-  }
+  const y = scrollY;
+  // no drop on phones, or for visitors who asked for less motion: there the blocks just scroll away with the hero
+  if (FLOW || reduce || y < 8) setFloor(false); else if (y > 24) setFloor(true);
+  const on = y < pin.offsetHeight; physicsOn = on || floorOpen; // the phone hero can be taller than the screen
+  const was = skyOn; skyOn = on; if (skyOn && !was) { lastS = performance.now(); requestAnimationFrame(skyFrame); }
   if (y > 10 && phase !== 'free') release();
   nav.classList.toggle('solid', exp.getBoundingClientRect().top < 70);
   requestAnimationFrame(render);
 }
-function onResize() { FLOW = mqFlow.matches; sizeSky(); measureRise(); buildWalls(); layoutDesk(); }
+function onResize() { FLOW = mqFlow.matches; sizeSky(); buildWalls(); layoutDesk(); }
 let rz; const queueResize = () => { clearTimeout(rz); rz = setTimeout(onResize, 150); };
 addEventListener('resize', queueResize); new ResizeObserver(queueResize).observe(pin);
 fontsReady.then(() => {
-  sizeSky(); seedSwarm(); measureRise(); buildWalls();
+  sizeSky(); seedSwarm(); buildWalls();
   if (!reduce) nameTargets(); else { pin.classList.add('settled'); release(); }
   t0 = performance.now(); lastS = t0;
   requestAnimationFrame(skyFrame); requestAnimationFrame(render);
