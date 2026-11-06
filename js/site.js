@@ -502,22 +502,6 @@ dockBtns.forEach((b, i) => b.addEventListener('click', () => {
   w.classList.remove('bump'); void w.offsetWidth; w.classList.add('bump'); syncDock(); blip(700, .06, 'sine', .08);
 }));
 
-/* ── how i work: a PR token runs past the five stations ── */
-const stations = $$('.station'), runner = $('#runner'), track = $('#track');
-let runT = 0, lastHit = -1, runOn = false;
-new IntersectionObserver(([en]) => { runOn = en.isIntersecting; }).observe(track);
-(function run() {
-  if (runOn && !reduce && !FLOW) {
-    runT = (runT + 1 / 420) % 1;
-    const rw = runner.offsetWidth, x = ease(clamp(runT / .85)) * (track.clientWidth - rw);
-    runner.style.transform = `translateX(${x}px)`;
-    const idx = Math.floor((x + rw / 2) / (track.clientWidth / 5));
-    if (runT > .97) { stations.forEach(s => s.classList.remove('hit')); lastHit = -1; }
-    else if (idx !== lastHit && idx < 5) { lastHit = idx; stations[idx].classList.add('hit'); blip(600 + idx * 120, .05, 'sine', .08); }
-  }
-  requestAnimationFrame(run);
-})();
-
 /* ── say hello: letters hop when you touch them ────── */
 const say = $('#say');
 say.setAttribute('aria-label', say.textContent);
