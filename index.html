@@ -1,373 +1,225 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Khalil Peguero — Software Engineer</title>
-  <meta name="description" content="Khalil Peguero — Software Engineer and Computer Science student at Florida International University, graduating Summer 2027.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script>
-    // Apply saved theme before first paint to avoid a flash. Default: dark.
-    (function () {
-      var theme = 'dark';
-      try { theme = localStorage.getItem('kp-theme') || theme; } catch (e) {}
-      document.documentElement.dataset.theme = theme;
-    })();
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khalil Peguero · Software engineer</title>
+<meta name="description" content="Khalil Peguero is a software engineer and CS student at FIU, and an Agent Engineer Intern at Swarms, an open-source multi-agent framework.">
+<meta property="og:title" content="Khalil Peguero · Software engineer">
+<meta property="og:description" content="Agent Engineer Intern at Swarms. CS at FIU, graduating in summer 2027.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff5a1f'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='14' font-weight='700' text-anchor='middle' fill='%23fff'%3Ekp%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<script>document.documentElement.classList.replace('no-js', 'js');</script>
+<script src="data/prs.js" defer></script>
+<script src="js/vendor/matter.min.js" defer></script>
+<script src="js/site.js" defer></script>
 </head>
 <body>
 
-<!-- ===================== NAV ===================== -->
-<nav class="nav" aria-label="Main">
-  <a href="#top" class="nav-logo">kp<span>/</span></a>
-  <div class="nav-links">
-    <a href="#about" class="nav-link" data-navlink="about">About</a>
-    <a href="#experience" class="nav-link" data-navlink="experience">Experience</a>
-    <a href="#projects" class="nav-link" data-navlink="projects">Projects</a>
-    <a href="#skills" class="nav-link" data-navlink="skills">Skills</a>
-    <a href="#contact" class="nav-link" data-navlink="contact">Contact</a>
-    <a href="Khalil_Peguero_Resume.pdf" download class="nav-resume" aria-label="Download Khalil Peguero's Resume (PDF)">Resume ↓</a>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to light mode">☀</button>
+<nav class="nav" id="nav">
+  <a class="me" href="#top"><span class="wave" aria-hidden="true">👋</span>Khalil Peguero</a>
+  <div class="right">
+    <a href="#experience" data-tick>Experience</a>
+    <a href="#projects" data-tick class="hide-sm">Projects</a>
+    <a href="#how" data-tick class="hide-sm">How I work</a>
+    <a href="#hello" data-tick>Contact</a>
+    <a href="Khalil_Peguero_Resume.pdf" data-tick class="hide-sm">Resume</a>
+    <button class="sound" id="sound" aria-pressed="false" aria-label="Toggle sound">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="on" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg>
+      <span class="off">sound off</span><span class="on">sound on</span>
+    </button>
   </div>
 </nav>
 
-<main id="top" class="main">
-
-  <!-- ===================== HERO ===================== -->
-  <header class="hero">
-    <p class="hero-name">Khalil Peguero</p>
-    <h1 class="hero-title">Full-Stack Engineer building software people actually use.</h1>
-    <p class="hero-typed" aria-label="CS at Florida International University, Full-stack Software Engineer, class of 2027">
-      <span class="prompt">&gt;</span> <span id="typed"></span><span class="cursor" aria-hidden="true"></span>
-    </p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="Khalil_Peguero_Resume.pdf" download class="btn-outline" aria-label="Download Khalil Peguero's Resume (PDF)">Download Resume</a>
-      <div class="hero-socials">
-        <a href="https://github.com/Kpeguero16" target="_blank" rel="noopener" aria-label="Khalil Peguero on GitHub" class="social-icon">
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-        </a>
-        <a href="https://linkedin.com/in/khalilpeguero" target="_blank" rel="noopener" aria-label="Khalil Peguero on LinkedIn" class="social-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
-        </a>
+<div class="stage" id="top">
+  <header class="pin" id="pin">
+    <canvas class="sky" id="sky" aria-hidden="true"></canvas>
+    <div class="copy" id="copy">
+      <p class="eyebrow"><i aria-hidden="true"></i>Software engineer · Swarms · CS at FIU '27</p>
+      <h1 class="name">Khalil Peguero</h1>
+      <p class="lede">I build backend and multi-agent systems. At <b>Swarms</b>, an open-source framework with 7K+ GitHub stars, I've merged <b><span data-stat="total">44</span> PRs</b> since October 2026. Every block on this page is one of them.</p>
+      <div class="readout">
+        <span class="count"><b id="onFloor">0</b> of <b data-stat="total">44</b> merged PRs on the floor</span>
+        <span id="howTo"><kbd>drag</kbd> to throw · <kbd>click</kbd> to open · click empty space and the swarm fetches another</span>
       </div>
+      <div class="ticker" id="ticker"><i class="dot" aria-hidden="true"></i><span class="ln" id="tickerLine"><span class="dim">waiting for the next merge…</span></span></div>
     </div>
+
+    <div class="win-rise" id="rise" aria-hidden="true">
+      <div class="bar"><span class="lights"><i></i><i></i><i></i></span><span>~/swarms · replay of recent merges</span></div>
+      <pre class="term" id="term"></pre>
+    </div>
+
+    <div class="world" id="world" aria-label="Merged pull requests, one block each"></div>
+    <div class="hint" id="hint">scroll to open the terminal ↓</div>
   </header>
+</div>
 
-  <!-- ===================== ABOUT ===================== -->
-  <section id="about" class="section" data-reveal>
-    <p class="section-tag">// 01 — about</p>
-    <div class="about-grid">
-      <div>
-        <h2 class="about-heading">A builder first.</h2>
-        <p class="about-text">I'm a Computer Science student at Florida International University in Miami, graduating in Summer 2027. I ship software that gets used: 44 merged PRs in Swarms, an open-source multi-agent framework, a donation portal with 27K+ donations, and a Solana trading platform that won MLH Best Use of Solana at ShellHacks 2026.</p>
-        <p class="about-text muted">I work across multi-agent systems, backend services, full-stack web and fintech. I'm VP of Finance of FIU's chapter of Sigma Lambda Beta and was its president in 2024–2025, so I'm as comfortable leading a team as writing the code. Bilingual in English and Spanish.</p>
+<section class="exp" id="experience" aria-labelledby="exp-title">
+  <div class="bar"><span class="lights"><i></i><i></i><i></i></span><span>experience · timeline</span></div>
+  <div class="tl-grid">
+    <div class="tl-intro">
+      <h2 class="h" id="exp-title"><b>#</b>Experience</h2>
+      <p>CS student at Florida International University in Miami, graduating in summer 2027. I'm VP of Finance of FIU's Sigma Lambda Beta chapter and was its president in 2024–2025. Bilingual in English and Spanish.</p>
+      <div class="tl-stats">
+        <div><b data-stat="total">44</b><span>merged PRs in Swarms</span></div>
+        <div><b>27K+</b><span>donations through a portal I maintain</span></div>
+        <div><b>2</b><span>hackathon awards</span></div>
       </div>
-      <div class="about-photo">
-        <img src="IMG_7834.JPG" alt="Khalil Peguero" loading="lazy" style="max-width:300px; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center 20%; border-radius:14px; border:1px solid var(--line); box-shadow:var(--shadow); justify-self:center">
+      <dl class="skills">
+        <dt>Languages</dt><dd>Python · Go · Java · C# · C · SQL · TypeScript · JavaScript</dd>
+        <dt>Frameworks</dt><dd>FastAPI · ASP.NET · React · Node.js · pytest · LiteLLM</dd>
+        <dt>Data &amp; infra</dt><dd>PostgreSQL · MySQL · SQLite · Redis · Docker · Linux · CI/CD · Solana</dd>
+      </dl>
+    </div>
+    <ol class="tl-list" id="tl">
+      <li class="tl-item now" style="--i:0"><span class="tl-dot"></span><div class="tl-when">Oct 2026 – now · remote</div>
+        <h3>Swarms <span>· Agent Engineer Intern</span></h3>
+        <p>I've merged <span data-stat="total">44</span> PRs (<span data-stat="code">32</span> code, <span data-stat="docs">12</span> docs) into an open-source Python multi-agent framework, 6 of them over competing PRs. I added SMTP/IMAP and AgentMail email channels and a GraphWorkflow error policy, and removed 600+ lines of dead code.</p>
+        <p>CronJob.stop() failed with "cannot join current thread" when a job stopped itself and left its task scheduled. I fixed it and a restart race, with 6 sleep-free regression tests checked against 16 deliberately broken versions of the method.</p>
+        <div class="tl-latest" id="tlLatest"></div>
+      </li>
+      <li class="tl-item now" style="--i:1"><span class="tl-dot"></span><div class="tl-when">May 2025 – now · remote</div>
+        <h3>Sigma Lambda Beta Education Foundation <span>· Software Engineer</span></h3>
+        <p>I maintain an ASP.NET/C# and MySQL donation portal with 27K+ donations and Authorize.NET payments. I combined payment types with an idempotent SQL migration that has a rollback, tested against 24 scenarios and a production snapshot. I also moved the District model to Region across 30+ files, which fixed 2 crashes and halved the region report's database round-trips.</p>
+      </li>
+      <li class="tl-item mile" style="--i:2"><span class="tl-dot"></span><div class="tl-when">2026</div>
+        <h3>ShellHacks <span>· MLH Best Use of Solana</span></h3>
+        <p>MomentumX, picked out of 294 projects.</p>
+      </li>
+      <li class="tl-item" style="--i:3"><span class="tl-dot"></span><div class="tl-when">May – Jul 2025</div>
+        <h3>BNY <span>· Tech Lead, Sophomore Summit</span></h3>
+        <p>Led a 5-person team in a mock-IPO coding challenge and presented our Python share-allocation algorithm to senior engineers.</p>
+      </li>
+      <li class="tl-item" style="--i:4"><span class="tl-dot"></span><div class="tl-when">May – Jul 2024 · Weston, FL</div>
+        <h3>Domus Care Solutions <span>· Software Engineer Intern</span></h3>
+        <p>Built a Java Swing report builder for patient records, and automated Google Sheets dashboards that saved analysts 8+ hours of manual sorting a week.</p>
+      </li>
+      <li class="tl-item mile" style="--i:5"><span class="tl-dot"></span><div class="tl-when">2023</div>
+        <h3>ShellHacks <span>· 3rd of 240+ projects</span></h3>
+        <p>MedVoyage, a medical-diagnosis web app built in a weekend.</p>
+      </li>
+      <li class="tl-item" style="--i:6"><span class="tl-dot"></span><div class="tl-when">Miami · graduating summer 2027</div>
+        <h3>Florida International University <span>· B.S. Computer Science</span></h3>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<main>
+  <section class="sec" id="projects" aria-labelledby="proj-title">
+    <h2 class="sec-h pop" id="proj-title"><b>#</b>Projects</h2>
+    <p class="sec-sub pop">Things I've shipped.<span class="desk-only"> Drag a window by its title bar, or close one and bring it back from the dock.</span></p>
+    <div class="desk pop" id="desk">
+      <article class="win t-FIX" data-win="0">
+        <div class="win-bar"><span class="lights"><button class="win-close" aria-label="Close MomentumX"></button><i></i><i></i></span><span>momentumx · hackathon</span></div>
+        <div class="stamp">MLH best<br>use of<br>Solana</div>
+        <div class="win-body">
+          <div class="demo"><canvas data-demo="flow"></canvas></div>
+          <p class="star">★ MLH Best Use of Solana, ShellHacks 2026 (294 projects)</p>
+          <h3>MomentumX</h3>
+          <p>A tokenized stock trading platform on Solana. I was backend lead on a team of four and built the FastAPI transaction layer. It checks each wallet-signed trade against its quote, co-signs it and submits it idempotently, so a dropped connection never loses or doubles a trade.</p>
+          <p class="tags">Python · FastAPI · SQLite · Solana · pytest</p>
+          <div class="links"><a class="btn" href="https://github.com/Kpeguero16/MomentumX">GitHub ↗</a></div>
+        </div>
+      </article>
+      <article class="win t-FEAT" data-win="1">
+        <div class="win-bar"><span class="lights"><button class="win-close" aria-label="Close QuantSim"></button><i></i><i></i></span><span>quantsim · microservices</span></div>
+        <div class="win-body">
+          <div class="demo"><canvas data-demo="candles"></canvas></div>
+          <p class="star">★ ~2,000 orders/s at 64 ms p99 with 100 concurrent clients</p>
+          <h3>QuantSim</h3>
+          <p>A paper trading and backtesting platform built as six Go microservices with 600+ tests. Row locks stop double-spends: 500 concurrent orders against a balance for 10 fill exactly 10. Backtests run at about 5M bars a second.</p>
+          <p class="tags">Go · PostgreSQL · Redis · Docker · React</p>
+          <div class="links"><a class="btn" href="https://github.com/Kpeguero16/quantsim">GitHub ↗</a></div>
+        </div>
+      </article>
+      <article class="win t-TEST" data-win="2">
+        <div class="win-bar"><span class="lights"><button class="win-close" aria-label="Close HermeΣ"></button><i></i><i></i></span><span>hermeΣ · slack app</span></div>
+        <div class="win-body">
+          <div class="demo"><canvas data-demo="minutes"></canvas></div>
+          <p class="star">★ In use by 20+ members across 2 chapters</p>
+          <h3>HermeΣ</h3>
+          <p>A Slack app that turns weekly chapter minutes into summaries, task lists and Google Calendar events. A diff-based sync keeps the calendar matched to the minutes, and E-Board members can ask a Slack agent about the calendar in plain English.</p>
+          <p class="tags">n8n · Python · Slack API · Google Calendar API · Linux VPS</p>
+          <div class="links"><a class="btn" href="https://usehermes.online/">Site ↗</a><a class="btn" href="https://github.com/Kpeguero16/Hermes">GitHub ↗</a></div>
+        </div>
+      </article>
+      <article class="win t-REFACTOR" data-win="3">
+        <div class="win-bar"><span class="lights"><button class="win-close" aria-label="Close MedVoyage"></button><i></i><i></i></span><span>medvoyage · hackathon</span></div>
+        <div class="stamp blue">3rd of<br>240+</div>
+        <div class="win-body">
+          <div class="demo"><canvas data-demo="tree"></canvas></div>
+          <p class="star">★ 3rd of 240+ projects, ShellHacks 2023</p>
+          <h3>MedVoyage</h3>
+          <p>A medical-diagnosis web app my team built front to back in a weekend, with parallax-scroll animations.</p>
+          <p class="tags">HTML · CSS · JavaScript · Git</p>
+          <div class="links"><a class="btn" href="https://kpeguero16.github.io/MedVoyage/">Site ↗</a><a class="btn" href="https://github.com/Kpeguero16/MedVoyage">GitHub ↗</a></div>
+        </div>
+      </article>
+      <article class="win t-DOCS" data-win="4">
+        <div class="win-bar"><span class="lights"><button class="win-close" aria-label="Close 365 Days"></button><i></i><i></i></span><span>365 days · web + tooling</span></div>
+        <div class="win-body">
+          <div class="demo"><canvas data-demo="days"></canvas></div>
+          <p class="star">★ 100 Lighthouse scores for performance and accessibility</p>
+          <h3>365 Days</h3>
+          <p>A digital anniversary album with date-gated entry. A Node.js pipeline renames, compresses and tracks 500+ media files (1.3 GB) through Git LFS.</p>
+          <p class="tags">HTML · CSS · JavaScript · Node.js · Git LFS</p>
+          <div class="links"><a class="btn" href="https://github.com/Kpeguero16/365Days">GitHub ↗</a></div>
+        </div>
+      </article>
+      <div class="dock" aria-label="Project windows">
+        <button class="open t-FIX" data-dock="0"><i></i>MomentumX</button>
+        <button class="open t-FEAT" data-dock="1"><i></i>QuantSim</button>
+        <button class="open t-TEST" data-dock="2"><i></i>HermeΣ</button>
+        <button class="open t-REFACTOR" data-dock="3"><i></i>MedVoyage</button>
+        <button class="open t-DOCS" data-dock="4"><i></i>365 Days</button>
       </div>
     </div>
   </section>
 
-  <!-- ===================== EXPERIENCE ===================== -->
-  <section id="experience" class="section">
-    <p class="section-tag">// 02 — experience</p>
-    <h2 class="section-title">Where I've worked</h2>
-    <div class="timeline">
-
-      <article class="job" data-reveal>
-        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
-        <div class="job-body">
-          <div class="job-head">
-            <h3 class="job-role">Agent Engineer Intern</h3>
-            <span class="job-org"><a href="https://github.com/kyegomez/swarms" target="_blank" rel="noopener">Swarms</a></span>
-          </div>
-          <p class="job-meta">Remote · October 2026 – Present</p>
-          <ul class="job-bullets">
-            <li>Merged 44 PRs (32 code, 12 docs) into an open-source Python multi-agent framework (7K+ GitHub stars), 6 of them over competing PRs, adding email channels and a GraphWorkflow error policy and removing 600+ lines of dead code.</li>
-            <li>Built SMTP/IMAP and AgentMail (REST, httpx) channels that keep agents and people in one email thread; live API tests exposed truncated agent posts, fixed with a length header (18/18 bodies read back exactly).</li>
-            <li>Fixed CronJob.stop() failing with "cannot join current thread" when a job stopped itself, which left its task scheduled, plus a restart race; added 6 sleep-free regression tests hardened against 16 deliberately faulty versions of the method.</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="job" data-reveal>
-        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
-        <div class="job-body">
-          <div class="job-head">
-            <h3 class="job-role">Software Engineer</h3>
-            <span class="job-org">Sigma Lambda Beta Education Foundation, Inc.</span>
-          </div>
-          <p class="job-meta">Remote · May 2025 – Present</p>
-          <ul class="job-bullets">
-            <li>Maintain an ASP.NET/C# and MySQL donation portal (27K+ donations) with Authorize.NET payments.</li>
-            <li>Consolidated payment types with an idempotent, self-validating SQL migration with rollback, tested against 24 scenarios and a production snapshot; fixed a bug where editing a contribution silently overwrote its payment type.</li>
-            <li>Refactored the District model into Region across the MySQL schema, entity layer, services and reports (30+ files), fixing 2 pre-existing crashes found in QA and halving the region report's database round-trips.</li>
-            <li>Wrote C# unit tests for the contribution validation service (98.7% line coverage) and integration tests for bug fixes, run by CI on every commit; peer-reviewed 12 teammate PRs spanning PCI remediation and OAuth flows.</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="job" data-reveal>
-        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
-        <div class="job-body">
-          <div class="job-head">
-            <h3 class="job-role">Tech Lead, Sophomore Summit</h3>
-            <span class="job-org">BNY</span>
-          </div>
-          <p class="job-meta">Remote · May 2025 – July 2025</p>
-          <ul class="job-bullets">
-            <li>Led a 5-member team in a mock-IPO coding challenge; designed and presented a Python share-allocation algorithm (bid price, timestamp, demand) to senior engineers and refined it from their feedback.</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="job" data-reveal>
-        <div class="job-marker" aria-hidden="true"><span class="dot"></span><span class="rule"></span></div>
-        <div class="job-body">
-          <div class="job-head">
-            <h3 class="job-role">Software Engineer Intern</h3>
-            <span class="job-org">Domus Care Solutions</span>
-          </div>
-          <p class="job-meta">Weston, FL · May 2024 – July 2024</p>
-          <ul class="job-bullets">
-            <li>Built a Java Swing desktop report builder that formats sensitive data for hundreds of patients into internal reports.</li>
-            <li>Automated Google Sheets dashboards with data analysts to track patient activity, billing time and insurance claims, cutting manual data-sorting by 8+ hours per week.</li>
-          </ul>
-        </div>
-      </article>
-
+  <section class="sec" id="how" aria-labelledby="how-title">
+    <h2 class="sec-h pop" id="how-title"><b>#</b>How I work</h2>
+    <p class="sec-sub pop">Small changes, each with proof.</p>
+    <div class="track pop" id="track">
+      <div class="station"><div class="n"><span>01</span><span class="tick">✓</span></div><b>Pick</b><p>Choose changes small enough to review in one sitting.</p></div>
+      <div class="station"><div class="n"><span>02</span><span class="tick">✓</span></div><b>Reproduce</b><p>Write the check that fails on master.</p></div>
+      <div class="station"><div class="n"><span>03</span><span class="tick">✓</span></div><b>Build</b><p>Make the change in its own worktree. Coding agents do the typing, and I read every line.</p></div>
+      <div class="station"><div class="n"><span>04</span><span class="tick">✓</span></div><b>Prove</b><p>The same check passes on the branch, and the module's tests still pass.</p></div>
+      <div class="station"><div class="n"><span>05</span><span class="tick">✓</span></div><b>Ship</b><p>Open a PR that states the problem, the fix and the evidence.</p></div>
+      <div class="rail"></div><div class="runner" id="runner">PR</div>
     </div>
   </section>
 
-  <!-- ===================== PROJECTS ===================== -->
-  <section id="projects" class="section">
-    <p class="section-tag">// 03 — projects</p>
-    <h2 class="section-title">Things I've shipped</h2>
-    <div class="projects-grid">
-
-      <article class="project-card" data-reveal>
-        <div class="project-head">
-          <h3 class="project-name">MomentumX</h3>
-          <span class="project-kind">hackathon</span>
-        </div>
-        <p class="project-desc">A tokenized stock trading platform on Solana. As backend lead of a 4-person team, I designed the REST API and SQLite schema and built the FastAPI transaction layer: it verifies each wallet-signed trade against its quote, co-signs it, and submits it idempotently so a dropped connection never loses or doubles a trade.</p>
-        <p class="project-highlight">★ MLH Best Use of Solana, ShellHacks 2026 (294 projects)</p>
-        <div class="project-stack">
-          <span>Python</span><span>FastAPI</span><span>SQLite</span><span>Solana</span><span>pytest</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/Kpeguero16/MomentumX" target="_blank" rel="noopener">GitHub ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card" data-reveal>
-        <div class="project-head">
-          <h3 class="project-name">QuantSim</h3>
-          <span class="project-kind">microservices</span>
-        </div>
-        <p class="project-desc">A paper trading and backtesting platform built as Go microservices (auth, gateway, market data, trading, backtesting, analytics) with 600+ tests. Row locks stop double-spends: 500 concurrent orders against a balance for 10 fill exactly 10. 500K+ fills reconcile against the ledger with 0 mismatches, and backtests run at ~5M bars/s.</p>
-        <p class="project-highlight">★ ~2,000 orders/s at 64 ms p99, 100 concurrent clients</p>
-        <div class="project-stack">
-          <span>Go</span><span>PostgreSQL</span><span>Redis</span><span>Docker</span><span>React</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/Kpeguero16/quantsim" target="_blank" rel="noopener">GitHub ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card" data-reveal>
-        <div class="project-head">
-          <h3 class="project-name">HermeΣ</h3>
-          <span class="project-kind">slack app</span>
-        </div>
-        <p class="project-desc">A Slack-integrated platform that turns weekly chapter minutes into summaries, task lists and Google Calendar events. A diff-based sync keeps the calendar in step with the minutes, and a natural-language Slack calendar agent is open to E-Board members.</p>
-        <p class="project-highlight">★ In active use by 20+ members across 2 chapters</p>
-        <div class="project-stack">
-          <span>n8n</span><span>Python</span><span>Slack API</span><span>Google Calendar API</span><span>Linux VPS</span>
-        </div>
-        <div class="project-links">
-          <a href="https://usehermes.online/" target="_blank" rel="noopener">Site ↗</a>
-          <a href="https://github.com/Kpeguero16/Hermes" target="_blank" rel="noopener">GitHub ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card" data-reveal>
-        <div class="project-head">
-          <h3 class="project-name">MedVoyage</h3>
-          <span class="project-kind">hackathon</span>
-        </div>
-        <p class="project-desc">A medical-diagnosis web app built front-to-back with a team, featuring parallax-scroll animations.</p>
-        <p class="project-highlight">★ 3rd of 240+ projects — ShellHacks 2023</p>
-        <div class="project-stack">
-          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Git</span>
-        </div>
-        <div class="project-links">
-          <a href="https://kpeguero16.github.io/MedVoyage/" target="_blank" rel="noopener">Site ↗</a>
-          <a href="https://github.com/Kpeguero16/MedVoyage" target="_blank" rel="noopener">GitHub ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card" data-reveal>
-        <div class="project-head">
-          <h3 class="project-name">365 Days</h3>
-          <span class="project-kind">web + tooling</span>
-        </div>
-        <p class="project-desc">A responsive digital anniversary album with date-gated entry and a Node.js asset pipeline that renames, compresses, and manages 500+ media files (1.3 GB) via Git LFS.</p>
-        <p class="project-highlight">★ 100% Lighthouse performance &amp; accessibility</p>
-        <div class="project-stack">
-          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Node.js</span><span>Git LFS</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/Kpeguero16/365Days" target="_blank" rel="noopener">GitHub ↗</a>
-        </div>
-      </article>
-
+  <section class="sec hello" id="hello" aria-labelledby="say">
+    <h2 class="say pop" id="say">Say hello</h2>
+    <p class="pop">Tell me what you're building. I usually reply within a day.</p>
+    <div class="compose pop">
+      <div class="win-bar"><span class="lights"><i></i><i></i><i></i></span><span>new message</span></div>
+      <form id="compose">
+        <label><span>To</span><input name="to" value="kpeguero@fiu.edu" readonly></label>
+        <label><span>Subject</span><input name="subject" value="Hi Khalil, " aria-label="Subject"></label>
+        <label class="body"><textarea name="body" aria-label="Message" placeholder="We're hiring for…"></textarea></label>
+        <div class="row"><button type="submit" class="send">Send ↗</button><button type="button" class="btn" id="copyAddr">Copy address</button></div>
+      </form>
+    </div>
+    <div class="elsewhere pop">
+      <a class="btn" href="https://github.com/Kpeguero16">GitHub ↗</a>
+      <a class="btn" href="https://linkedin.com/in/khalilpeguero">LinkedIn ↗</a>
+      <a class="btn" href="Khalil_Peguero_Resume.pdf">Resume (PDF) ↓</a>
     </div>
   </section>
-
-  <!-- ===================== SKILLS ===================== -->
-  <section id="skills" class="section">
-    <p class="section-tag">// 04 — skills &amp; tech stack</p>
-    <h2 class="section-title">What I work with</h2>
-    <div class="skills-grid">
-
-      <div class="skill-group" data-reveal>
-        <h3 class="skill-label">languages</h3>
-        <div class="skill-items">
-          <span>Python</span><span>Go</span><span>Java</span><span>C#</span><span>C</span><span>SQL</span><span>TypeScript</span><span>JavaScript</span><span>HTML/CSS</span>
-        </div>
-      </div>
-
-      <div class="skill-group" data-reveal>
-        <h3 class="skill-label">frameworks &amp; tools</h3>
-        <div class="skill-items">
-          <span>FastAPI</span><span>ASP.NET/.NET</span><span>React</span><span>Node.js</span><span>pytest</span><span>LiteLLM</span><span>Git</span><span>Claude Code</span><span>Codex</span>
-        </div>
-      </div>
-
-      <div class="skill-group" data-reveal>
-        <h3 class="skill-label">data &amp; infrastructure</h3>
-        <div class="skill-items">
-          <span>PostgreSQL</span><span>MySQL</span><span>SQLite</span><span>Redis</span><span>Docker</span><span>Linux</span><span>CI/CD</span><span>Solana</span>
-        </div>
-      </div>
-
-      <div class="skill-group" data-reveal>
-        <h3 class="skill-label">engineering practices</h3>
-        <div class="skill-items">
-          <span>Multi-agent systems</span><span>REST APIs</span><span>Microservices</span><span>Unit, integration &amp; mutation testing</span><span>JWT/OAuth2</span>
-        </div>
-      </div>
-
-      <div class="skill-group" data-reveal>
-        <h3 class="skill-label">certifications</h3>
-        <div class="skill-items">
-          <span>Certiport Java IT Specialist</span><span>React Foundations for Next.js</span><span>Learning Git &amp; GitHub</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ===================== CONTACT ===================== -->
-  <section id="contact" class="contact" data-reveal>
-    <p class="section-tag">// 05 — contact</p>
-    <h2 class="contact-title">Looking to build something great together?</h2>
-    <p class="contact-blurb">I'd love to hear about what you're building. My inbox is open — I usually reply within a day.</p>
-    <div class="contact-actions">
-      <a href="mailto:kpeguero@fiu.edu" class="btn-primary">kpeguero@fiu.edu</a>
-      <a href="Khalil_Peguero_Resume.pdf" download class="btn-outline" aria-label="Download Khalil Peguero's Resume (PDF)">Resume (PDF) ↓</a>
-    </div>
-    <div class="contact-socials">
-      <a href="https://linkedin.com/in/khalilpeguero" target="_blank" rel="noopener" aria-label="Khalil Peguero on LinkedIn">linkedin.com/in/khalilpeguero</a>
-      <a href="https://github.com/Kpeguero16" target="_blank" rel="noopener" aria-label="Khalil Peguero on GitHub">github.com/Kpeguero16</a>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <span>© <span id="year"></span> Khalil Peguero</span>
-    <span>Miami, FL</span>
-  </footer>
 </main>
 
-<script>
-(function () {
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ---- Theme toggle ----
-  var toggle = document.getElementById('theme-toggle');
-  function renderToggle() {
-    var dark = document.documentElement.dataset.theme !== 'light';
-    toggle.textContent = dark ? '☀' : '☾';
-    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-  toggle.addEventListener('click', function () {
-    var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('kp-theme', next); } catch (e) {}
-    renderToggle();
-  });
-  renderToggle();
-
-  // ---- Typed hero line ----
-  var fullTyped = 'CS @ Florida International University · Full-stack Software Engineer · Class of 2027';
-  var typedEl = document.getElementById('typed');
-  if (reduced) {
-    typedEl.textContent = fullTyped;
-  } else {
-    var i = 0;
-    var typer = setInterval(function () {
-      i++;
-      typedEl.textContent = fullTyped.slice(0, i);
-      if (i >= fullTyped.length) clearInterval(typer);
-    }, 32);
-  }
-
-  // ---- Footer year ----
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ---- Scroll reveals ----
-  var revealEls = document.querySelectorAll('[data-reveal]');
-  if (!reduced && 'IntersectionObserver' in window) {
-    revealEls.forEach(function (el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(18px)';
-      el.style.transition = 'opacity .6s ease, transform .6s ease';
-    });
-    var revealObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.style.opacity = '1';
-          en.target.style.transform = 'none';
-          revealObs.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(function (el) { revealObs.observe(el); });
-  }
-
-  // ---- Active-section nav highlight ----
-  var sections = ['about', 'experience', 'projects', 'skills', 'contact']
-    .map(function (id) { return document.getElementById(id); })
-    .filter(Boolean);
-  function setActive(id) {
-    document.querySelectorAll('[data-navlink]').forEach(function (a) {
-      a.classList.toggle('active', a.getAttribute('data-navlink') === id);
-    });
-  }
-  if ('IntersectionObserver' in window) {
-    var navObs = new IntersectionObserver(function (entries) {
-      var visible = entries.filter(function (e) { return e.isIntersecting; })
-        .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; })[0];
-      if (visible) setActive(visible.target.id);
-    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5] });
-    sections.forEach(function (s) { navObs.observe(s); });
-  }
-})();
-</script>
+<footer>
+  <span>© 2026 Khalil Peguero · Miami, FL</span>
+  <span>Every block is a merged PR. The list refreshes twice a week.</span>
+</footer>
+<div class="tip" id="tip" role="tooltip"></div>
+<div class="toast" id="toast" role="status"></div>
 </body>
 </html>

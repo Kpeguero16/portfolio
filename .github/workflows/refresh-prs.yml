@@ -1,0 +1,35 @@
+name: Refresh merged PRs
+
+on:
+  schedule:
+    - cron: "17 13 * * 1,4" # Mondays and Thursdays, 13:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch merged PRs
+        run: node scripts/fetch-prs.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit the new data and rebuild Pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- data/prs.js; then echo "No new merged PRs."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prs.js
+          git commit -m "Refresh merged PR data"
+          git push
+          # A push made with GITHUB_TOKEN doesn't start a Pages build, so request one.
+          gh api -X POST "repos/${{ github.repository }}/pages/builds"
