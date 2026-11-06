@@ -228,7 +228,7 @@ const HX = new Float32Array(NA), HY = new Float32Array(NA), TX = new Float32Arra
 const HAS = new Uint8Array(NA), TASK = new Int16Array(NA).fill(-1), ARR = new Uint8Array(NA), SEED = new Float32Array(NA), COL = new Uint8Array(NA);
 const palette = ['rgba(255,90,31,.8)', 'rgba(47,107,255,.8)', 'rgba(23,160,93,.8)', 'rgba(122,92,255,.8)', 'rgba(23,21,15,.55)'];
 // canvas colors; the paper and ink ones come from css/site.css, so they follow the light or dark palette
-const C = { orange: '#ff5a1f', blue: '#2f6bff', green: '#17a05d', violet: '#7a5cff', yellow: '#ffc933' };
+const C = { orange: '#ff5a1f', blue: '#2f6afc', green: '#17a05d', violet: '#785afa', yellow: '#ffc933' };
 function readTheme() {
   const s = getComputedStyle(document.documentElement), v = (n, light) => s.getPropertyValue(n).trim() || light;
   Object.assign(C, { ink: v('--ink', '#17150f'), ink2: v('--ink-2', '#5b564a'), line: v('--line', '#ddd5c3'), card: v('--card', '#fffdf8'), paper: v('--paper', '#f3efe6') });
