@@ -202,18 +202,6 @@ main { background: var(--card); position: relative; z-index: 7 }
 .dock button::after { content: ""; position: absolute; bottom: 3px; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); opacity: 0; transform: translateX(-50%); transition: opacity .2s }
 .dock button.open::after { opacity: 1 }
 
-/* how i work */
-.track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding-bottom: 58px }
-.station { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 20px; transition: transform .5s var(--spring), border-color .3s }
-.station b { display: block; font-size: 22px; letter-spacing: -.02em; margin: 10px 0 6px }
-.station p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.5 }
-.station .n { font-family: var(--mono); font-size: 12px; color: var(--ink-3); display: flex; justify-content: space-between }
-.station .tick { color: var(--green); opacity: 0; transform: scale(.4); transition: opacity .2s, transform .4s var(--spring) }
-.station.hit { transform: translateY(-6px); border-color: var(--ink) }
-.station.hit .tick { opacity: 1; transform: none }
-.rail { position: absolute; left: 0; right: 0; bottom: 22px; height: 4px; border-radius: 4px; background: repeating-linear-gradient(90deg, var(--line) 0 10px, transparent 10px 18px) }
-.runner { position: absolute; bottom: 13px; left: 0; width: 44px; height: 22px; border-radius: 7px; background: var(--orange); box-shadow: 0 -3px 0 rgba(0, 0, 0, .14) inset; font-family: var(--mono); font-size: 10px; color: var(--on-fill); display: grid; place-items: center }
-
 /* contact */
 .hello { text-align: center; padding-bottom: 110px }
 .say { font-size: clamp(76px, 14vw, 220px); line-height: .9; letter-spacing: -.055em; font-weight: 800; margin: 0 0 18px; cursor: default; user-select: none }
@@ -262,8 +250,6 @@ footer { position: relative; z-index: 7; border-top: 1px solid var(--line); padd
   .win .win-bar { cursor: default }
   .win-close { pointer-events: none }
   .dock, .desk-only { display: none }
-  .track { grid-template-columns: 1fr }
-  .rail, .runner { display: none }
   .nav .right a { padding: 7px 9px }
   .nav .right a.hide-sm, .sound span, .wave { display: none }
   .compose label { grid-template-columns: 64px 1fr }

@@ -34,16 +34,6 @@
 - [Swarms docs PRs](https://github.com/The-Swarm-Corporation/swarms-framework-docs/pulls?q=is%3Apr+is%3Amerged+author%3AKpeguero16): the live list on GitHub.
 - [data/prs.js](https://khalilpeguero.me/portfolio/data/prs.js): every merged PR the portfolio shows, as a JavaScript array. A scheduled job refreshes it twice a week.
 
-## How Khalil works
-
-Small changes, each with proof.
-
-1. Pick: choose changes small enough to review in one sitting.
-2. Reproduce: write the check that fails on master.
-3. Build: make the change in its own worktree. Coding agents do the typing, and Khalil reads every line.
-4. Prove: the same check passes on the branch, and the module's tests still pass.
-5. Ship: open a PR that states the problem, the fix and the evidence.
-
 ## Skills
 
 - Languages: Python, Go, Java, C#, C, SQL, TypeScript, JavaScript, HTML/CSS
