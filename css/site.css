@@ -1,6 +1,6 @@
 /* Khalil Peguero's portfolio. Paper theme: warm paper, ink, one orange accent. */
 :root {
-  --paper: #f3efe6; --card: #fffdf8; --ink: #17150f; --ink-2: #5b564a; --ink-3: #8f8877; --line: #ddd5c3;
+  --paper: #f3efe6; --card: #fffdf8; --ink: #17150f; --ink-2: #5b564a; --ink-3: #706a5c; --line: #ddd5c3;
   --orange: #ff5a1f; --blue: #2f6bff; --green: #17a05d; --violet: #7a5cff; --yellow: #ffc933; --chore: #f7f2e7;
   --sans: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
