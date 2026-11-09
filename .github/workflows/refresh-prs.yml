@@ -29,10 +29,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if git diff --quiet -- data/prs.js; then echo "No new merged PRs."; exit 0; fi
+          if git diff --quiet -- data/prs.js llms.txt; then echo "No new merged PRs."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/prs.js
+          git add data/prs.js llms.txt
           git commit -m "Refresh merged PR data"
           git push
           # A push made with GITHUB_TOKEN doesn't start other workflows, but a dispatch does.
