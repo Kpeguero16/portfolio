@@ -10,11 +10,11 @@ It's one static page with no build step. Open `index.html` in a browser to run i
 - `js/vendor/matter.min.js` is [matter.js](https://brm.io/matter-js/) 0.20.0 (MIT), the physics engine.
 - `data/prs.js` lists every PR merged into [Swarms](https://github.com/kyegomez/swarms) and its [docs](https://github.com/The-Swarm-Corporation/swarms-framework-docs). Each one becomes a block in the hero.
 - `og.png` is the link-preview image. `scripts/og-image.html` is its source, and the command to rebuild it is at the top of that file.
-- `llms.txt` is the page's content in Markdown, for agents. Its PR count is dated, so it doesn't need the refresh job.
+- `llms.txt` is the page's content in Markdown, for agents. The refresh job updates its PR count along with `data/prs.js`.
 
 ## Refreshing the PR data
 
-`.github/workflows/refresh-prs.yml` runs on Mondays and Thursdays and can also be started from the Actions tab. It rewrites `data/prs.js`, commits it if anything changed, and starts `.github/workflows/pages.yml`, which deploys the site. That workflow also deploys every push to `main`, so Settings > Pages > Source must be "GitHub Actions".
+`.github/workflows/refresh-prs.yml` runs on Mondays and Thursdays and can also be started from the Actions tab. It rewrites `data/prs.js` and the PR count in `llms.txt`, commits them if anything changed, and starts `.github/workflows/pages.yml`, which deploys the site. That workflow also deploys every push to `main`, so Settings > Pages > Source must be "GitHub Actions".
 
 To refresh by hand:
 
